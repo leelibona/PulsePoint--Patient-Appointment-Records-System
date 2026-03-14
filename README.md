@@ -1,4 +1,4 @@
-# ?? PulsePoint — Patient Appointment & Records System
+#  PulsePoint — Patient Appointment & Records System
 
 ## Overview
 
@@ -10,12 +10,13 @@ Once completed, PulsePoint will provide:
 - **Doctors** with a dedicated dashboard to manage daily schedules, write consultation notes, and issue digital prescriptions
 - **Administrators** with a system-wide control panel featuring real-time analytics on appointments, revenue, and doctor performance
 - **Automated SMS reminders** via Twilio to notify patients of upcoming appointments and reduce no-shows
+
 - **Role-based access control** ensuring every user only accesses what they are authorised to see
 
 
 
 ## Project Documents
 
-- ?? [SPECIFICATION.md](./SPECIFICATION.md) — Full system specification including domain, problem statement, functional and non-functional requirements
-- ??? [ARCHITECTURE.md](./ARCHITECTURE.md) — C4 architectural diagrams covering Context, Container, Component, and Code levels
+-  [SPECIFICATION.md](./SPECIFICATION.md) — Full system specification including domain, problem statement, functional and non-functional requirements
+-  [ARCHITECTURE.md](./ARCHITECTURE.md) — C4 architectural diagrams covering Context, Container, Component, and Code levels
 
