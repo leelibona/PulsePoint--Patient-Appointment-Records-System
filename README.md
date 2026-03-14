@@ -17,6 +17,6 @@ Once completed, PulsePoint will provide:
 
 ## Project Documents
 
--  [SPECIFICATION.md](./SPECIFICATION.md) — Full system specification including domain, problem statement, functional and non-functional requirements
--  [ARCHITECTURE.md](./ARCHITECTURE.md) — C4 architectural diagrams covering Context, Container, Component, and Code levels
+- [SPECIFICATION.md](./specification.md) — Full system specification including domain, problem statement, functional and non-functional requirements
+- [ARCHITECTURE.md](./architecture.md) — C4 architectural diagrams covering Context, Container, Component, and Code levels
 
