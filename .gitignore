@@ -1,0 +1,6 @@
+.vs/
+*.vsidx
+*.suo
+*.user
+node_modules/
+.env
