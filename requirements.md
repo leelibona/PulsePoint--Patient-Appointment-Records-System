@@ -14,7 +14,7 @@ Functional requirements describe what the system shall do. Each requirement incl
 
 ---
 
-### FR-01 — User Registration
+### Functional Requirement 01 — User Registration
 
 **Requirement:** The system shall allow patients to self-register by providing their full name, email address, phone number, date of birth, and gender. Doctors shall be registered exclusively by the Administrator.
 
@@ -28,9 +28,9 @@ Functional requirements describe what the system shall do. Each requirement incl
 
 ---
 
-### FR-02 — User Authentication and Role-Based Access
+### Functional Requirement 02 — User Authentication and Role-Based Access
 
-**Requirement:** The system shall authenticate all users via email and password. Upon login, the system shall redirect each user to their role-specific dashboard ,  Patient Portal, Doctor Dashboard, or Admin Control Panel.
+**Requirement:** The system shall authenticate all users via email and password. Upon login, the system shall redirect each user to their role-specific dashboard — Patient Portal, Doctor Dashboard, or Admin Control Panel.
 
 **Stakeholder:** Patient, Doctor, Administrator, IT Support Staff
 
@@ -42,7 +42,7 @@ Functional requirements describe what the system shall do. Each requirement incl
 
 ---
 
-### FR-03 — Appointment Booking
+### Functional Requirement 03 — Appointment Booking
 
 **Requirement:** The system shall allow patients to book an appointment by selecting a doctor, choosing an available date, and selecting an available time slot.
 
@@ -56,7 +56,7 @@ Functional requirements describe what the system shall do. Each requirement incl
 
 ---
 
-### FR-04 — Appointment Rescheduling and Cancellation
+### Functional Requirement 04 — Appointment Rescheduling and Cancellation
 
 **Requirement:** The system shall allow patients to reschedule or cancel an existing appointment up to 2 hours before the scheduled time.
 
@@ -70,7 +70,7 @@ Functional requirements describe what the system shall do. Each requirement incl
 
 ---
 
-### FR-05 — Doctor Schedule Management
+### Functional Requirement 05 — Doctor Schedule Management
 
 **Requirement:** The system shall provide doctors with a dashboard displaying their daily and weekly appointment schedule, including patient names, appointment times, and consultation status.
 
@@ -84,21 +84,21 @@ Functional requirements describe what the system shall do. Each requirement incl
 
 ---
 
-### FR-06 — Electronic Medical Records (EMR) Creation
+### Functional Requirement 06 — Electronic Medical Records Creation
 
 **Requirement:** The system shall allow doctors to create an electronic medical record for a patient after each consultation, including diagnosis, consultation notes, and prescription details.
 
 **Stakeholder:** Doctor, Patient, Medical Regulators
 
 **Acceptance Criteria:**
-- EMR form is accessible directly from the appointment view
+- Electronic Medical Record form is accessible directly from the appointment view
 - All fields (diagnosis, notes, prescription) must be completed before saving
 - Saved records are immediately linked to the patient's profile
 - Records cannot be deleted — only updated with a tracked change log
 
 ---
 
-### FR-07 — Patient Medical Records Access
+### Functional Requirement 07 — Patient Medical Records Access
 
 **Requirement:** The system shall allow patients to view their full medical history, including past diagnoses, consultation notes, and prescriptions issued by their doctors.
 
@@ -112,7 +112,7 @@ Functional requirements describe what the system shall do. Each requirement incl
 
 ---
 
-### FR-08 — SMS Appointment Reminders
+### Functional Requirement 08 — SMS Appointment Reminders
 
 **Requirement:** The system shall automatically send an SMS reminder to the patient 24 hours before their scheduled appointment via the Twilio API.
 
@@ -126,7 +126,7 @@ Functional requirements describe what the system shall do. Each requirement incl
 
 ---
 
-### FR-09 — Admin User Management
+### Functional Requirement 09 — Administrator User Management
 
 **Requirement:** The system shall allow administrators to create, update, deactivate, and delete doctor and patient accounts from the Admin Control Panel.
 
@@ -140,7 +140,7 @@ Functional requirements describe what the system shall do. Each requirement incl
 
 ---
 
-### FR-10 — Admin Analytics Dashboard
+### Functional Requirement 10 — Administrator Analytics Dashboard
 
 **Requirement:** The system shall provide administrators with a real-time analytics dashboard displaying total appointments, appointment status breakdown, doctor performance metrics, and no-show rates.
 
@@ -154,7 +154,7 @@ Functional requirements describe what the system shall do. Each requirement incl
 
 ---
 
-### FR-11 — Doctor Search and Profile Viewing
+### Functional Requirement 11 — Doctor Search and Profile Viewing
 
 **Requirement:** The system shall allow patients to search for available doctors by name or specialisation and view each doctor's profile including qualifications and available time slots.
 
@@ -168,7 +168,7 @@ Functional requirements describe what the system shall do. Each requirement incl
 
 ---
 
-### FR-12 — Audit Trail Logging
+### Functional Requirement 12 — Audit Trail Logging
 
 **Requirement:** The system shall maintain a complete audit log of all record accesses and modifications, capturing the user ID, action performed, timestamp, and affected record.
 
@@ -190,11 +190,11 @@ Non-functional requirements define the quality attributes the system must meet. 
 
 ### 3.1 Usability
 
-**NFR-U01:** The system interface shall be responsive and fully functional on desktop, tablet, and mobile browsers without requiring any plugin installation.
+**Non-Functional Requirement — Usability 01:** The system interface shall be responsive and fully functional on desktop, tablet, and mobile browsers without requiring any plugin installation.
 
 > **Measure:** Tested across Chrome, Firefox, and Safari on screen sizes from 375px to 1920px wide with zero layout breakage.
 
-**NFR-U02:** The system shall comply with WCAG 2.1 Level AA accessibility standards to ensure usability for users with visual or motor impairments.
+**Non-Functional Requirement — Usability 02:** The system shall comply with WCAG 2.1 Level AA accessibility standards to ensure usability for users with visual or motor impairments.
 
 > **Measure:** Automated accessibility audit using Lighthouse returns a score of 90 or above.
 
@@ -202,11 +202,11 @@ Non-functional requirements define the quality attributes the system must meet. 
 
 ### 3.2 Deployability
 
-**NFR-D01:** The system shall be deployable on both Windows and Linux server environments using standard Node.js and PostgreSQL installation procedures.
+**Non-Functional Requirement — Deployability 01:** The system shall be deployable on both Windows and Linux server environments using standard Node.js and PostgreSQL installation procedures.
 
 > **Measure:** Full deployment completed in under 30 minutes using the provided setup documentation.
 
-**NFR-D02:** The system shall include a Docker configuration file to support containerised deployment for consistent environment setup across development, staging, and production.
+**Non-Functional Requirement — Deployability 02:** The system shall include a Docker configuration file to support containerised deployment for consistent environment setup across development, staging, and production.
 
 > **Measure:** System starts successfully using `docker-compose up` with no manual configuration required.
 
@@ -214,11 +214,11 @@ Non-functional requirements define the quality attributes the system must meet. 
 
 ### 3.3 Maintainability
 
-**NFR-M01:** All API endpoints shall be documented in a developer API guide, including request/response formats, authentication requirements, and example calls.
+**Non-Functional Requirement — Maintainability 01:** All API endpoints shall be documented in a developer API guide, including request/response formats, authentication requirements, and example calls.
 
 > **Measure:** 100% of endpoints documented before system release.
 
-**NFR-M02:** The codebase shall follow a modular architecture with clearly separated concerns (controllers, services, models) so that individual components can be updated without affecting others.
+**Non-Functional Requirement — Maintainability 02:** The codebase shall follow a modular architecture with clearly separated concerns (controllers, services, models) so that individual components can be updated without affecting others.
 
 > **Measure:** A change to any single controller requires no modification to any other controller to take effect.
 
@@ -226,11 +226,11 @@ Non-functional requirements define the quality attributes the system must meet. 
 
 ### 3.4 Scalability
 
-**NFR-S01:** The system shall support a minimum of 500 concurrent users during peak clinic hours without degradation in response time.
+**Non-Functional Requirement — Scalability 01:** The system shall support a minimum of 500 concurrent users during peak clinic hours without degradation in response time.
 
 > **Measure:** Load testing with 500 simultaneous users produces average response times under 2 seconds.
 
-**NFR-S02:** The database schema shall be designed to support future expansion, including the addition of new user roles, appointment types, and clinic branches, without requiring structural redesign.
+**Non-Functional Requirement — Scalability 02:** The database schema shall be designed to support future expansion, including the addition of new user roles, appointment types, and clinic branches, without requiring structural redesign.
 
 > **Measure:** A new user role can be added by modifying only the roles table and relevant controller, with no changes to the core schema.
 
@@ -238,15 +238,15 @@ Non-functional requirements define the quality attributes the system must meet. 
 
 ### 3.5 Security
 
-**NFR-SEC01:** All data transmitted between the client and server shall be encrypted using HTTPS/TLS 1.2 or higher.
+**Non-Functional Requirement — Security 01:** All data transmitted between the client and server shall be encrypted using HTTPS/TLS 1.2 or higher.
 
 > **Measure:** All HTTP requests are redirected to HTTPS. SSL Labs security rating of A or above.
 
-**NFR-SEC02:** All user passwords shall be hashed using bcrypt with a minimum salt round of 10 before being stored in the database.
+**Non-Functional Requirement — Security 02:** All user passwords shall be hashed using bcrypt with a minimum salt round of 10 before being stored in the database.
 
 > **Measure:** No plaintext passwords exist in the database under any circumstance. Verified by database audit.
 
-**NFR-SEC03:** All patient medical records shall be accessible only to the patient themselves and their assigned doctor, enforced at the API level through role-based access control.
+**Non-Functional Requirement — Security 03:** All patient medical records shall be accessible only to the patient themselves and their assigned doctor, enforced at the API level through role-based access control.
 
 > **Measure:** Penetration test confirms that a patient cannot access another patient's records under any authenticated session.
 
@@ -254,11 +254,11 @@ Non-functional requirements define the quality attributes the system must meet. 
 
 ### 3.6 Performance
 
-**NFR-P01:** All key pages — including the appointment booking page, patient dashboard, and doctor schedule — shall load within 2 seconds under normal network conditions.
+**Non-Functional Requirement — Performance 01:** All key pages — including the appointment booking page, patient dashboard, and doctor schedule — shall load within 2 seconds under normal network conditions.
 
 > **Measure:** Google Lighthouse performance score of 85 or above on all key pages.
 
-**NFR-P02:** The system shall process and confirm an appointment booking within 3 seconds of the patient submitting the booking form.
+**Non-Functional Requirement — Performance 02:** The system shall process and confirm an appointment booking within 3 seconds of the patient submitting the booking form.
 
 > **Measure:** End-to-end booking time measured from form submission to confirmation screen display is under 3 seconds in 95% of test cases.
 
@@ -266,30 +266,30 @@ Non-functional requirements define the quality attributes the system must meet. 
 
 ## 4. Requirements Traceability Matrix
 
-| Requirement ID | Description | Stakeholder |
+| Requirement | Description | Stakeholder |
 |---|---|---|
-| FR-01 | User Registration | Patient, Administrator |
-| FR-02 | Authentication & Role-Based Access | Patient, Doctor, Admin, IT Staff |
-| FR-03 | Appointment Booking | Patient, Receptionist |
-| FR-04 | Appointment Rescheduling & Cancellation | Patient, Receptionist, Doctor |
-| FR-05 | Doctor Schedule Management | Doctor |
-| FR-06 | EMR Creation | Doctor, Patient, Regulators |
-| FR-07 | Patient Medical Records Access | Patient, Regulators |
-| FR-08 | SMS Appointment Reminders | Patient, Twilio |
-| FR-09 | Admin User Management | Administrator |
-| FR-10 | Admin Analytics Dashboard | Administrator |
-| FR-11 | Doctor Search & Profile Viewing | Patient |
-| FR-12 | Audit Trail Logging | Regulators, IT Staff |
-| NFR-U01 | Responsive Design | Patient, Receptionist |
-| NFR-U02 | Accessibility (WCAG 2.1) | Patient, Regulators |
-| NFR-D01 | Cross-Platform Deployability | IT Support Staff |
-| NFR-D02 | Docker Support | IT Support Staff |
-| NFR-M01 | API Documentation | IT Support Staff |
-| NFR-M02 | Modular Architecture | IT Support Staff |
-| NFR-S01 | 500 Concurrent Users | Administrator, IT Staff |
-| NFR-S02 | Scalable Schema | IT Support Staff |
-| NFR-SEC01 | HTTPS/TLS Encryption | Regulators, IT Staff |
-| NFR-SEC02 | Password Hashing | Regulators, IT Staff |
-| NFR-SEC03 | Role-Based Record Access | Patient, Regulators |
-| NFR-P01 | Page Load Under 2 Seconds | Patient, Doctor, Receptionist |
-| NFR-P02 | Booking Confirmation Under 3 Seconds | Patient |
+| Functional Requirement 01 | User Registration | Patient, Administrator |
+| Functional Requirement 02 | User Authentication and Role-Based Access | Patient, Doctor, Administrator, IT Support Staff |
+| Functional Requirement 03 | Appointment Booking | Patient, Receptionist |
+| Functional Requirement 04 | Appointment Rescheduling and Cancellation | Patient, Receptionist, Doctor |
+| Functional Requirement 05 | Doctor Schedule Management | Doctor |
+| Functional Requirement 06 | Electronic Medical Records Creation | Doctor, Patient, Medical Regulators |
+| Functional Requirement 07 | Patient Medical Records Access | Patient, Medical Regulators |
+| Functional Requirement 08 | SMS Appointment Reminders | Patient, Twilio |
+| Functional Requirement 09 | Administrator User Management | Administrator |
+| Functional Requirement 10 | Administrator Analytics Dashboard | Administrator |
+| Functional Requirement 11 | Doctor Search and Profile Viewing | Patient |
+| Functional Requirement 12 | Audit Trail Logging | Medical Regulators, IT Support Staff |
+| Non-Functional Requirement — Usability 01 | Responsive Design | Patient, Receptionist |
+| Non-Functional Requirement — Usability 02 | Accessibility — WCAG 2.1 | Patient, Medical Regulators |
+| Non-Functional Requirement — Deployability 01 | Cross-Platform Deployability | IT Support Staff |
+| Non-Functional Requirement — Deployability 02 | Docker Containerised Deployment | IT Support Staff |
+| Non-Functional Requirement — Maintainability 01 | API Endpoint Documentation | IT Support Staff |
+| Non-Functional Requirement — Maintainability 02 | Modular Codebase Architecture | IT Support Staff |
+| Non-Functional Requirement — Scalability 01 | 500 Concurrent Users Support | Administrator, IT Support Staff |
+| Non-Functional Requirement — Scalability 02 | Scalable Database Schema | IT Support Staff |
+| Non-Functional Requirement — Security 01 | HTTPS and TLS Encryption | Medical Regulators, IT Support Staff |
+| Non-Functional Requirement — Security 02 | Password Hashing with bcrypt | Medical Regulators, IT Support Staff |
+| Non-Functional Requirement — Security 03 | Role-Based Medical Record Access | Patient, Medical Regulators |
+| Non-Functional Requirement — Performance 01 | Page Load Within 2 Seconds | Patient, Doctor, Receptionist |
+| Non-Functional Requirement — Performance 02 | Booking Confirmation Within 3 Seconds | Patient |
