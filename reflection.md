@@ -1,6 +1,6 @@
-# REFLECTION.md — Challenges in Balancing Stakeholder Needs
+# REFLECTION.md ï¿½ Challenges in Balancing Stakeholder Needs
 
-**Project:** PulsePoint — Patient Appointment & Records System
+**Project:** PulsePoint ï¿½ Patient Appointment & Records System
 
 ---
 
@@ -10,7 +10,7 @@ Gathering and balancing stakeholder requirements is one of the most complex aspe
 
 ---
 
-## 2. Challenge 1 — Patient Convenience vs. Security Requirements
+## 2. Challenge 1 ï¿½ Patient Convenience vs. Security Requirements
 
 One of the most significant tensions encountered was between the **Patient's** desire for a fast, frictionless experience and the **Medical Regulators'** strict requirements for data security and access control.
 
@@ -23,7 +23,7 @@ The system was designed to use JWT-based authentication with a 24-hour token exp
 
 ---
 
-## 3. Challenge 2 — Receptionist Workflow vs. Patient Self-Service
+## 3. Challenge 2 ï¿½ Receptionist Workflow vs. Patient Self-Service
 
 The **Receptionist** stakeholder presented an interesting conflict with the **Patient** stakeholder. Patients want full self-service booking capabilities ,  the ability to book, reschedule, and cancel without any staff involvement. However, receptionists are concerned about losing visibility and control over the appointment book, particularly for elderly or non-tech-savvy patients who may still need assistance.
 
@@ -36,20 +36,20 @@ The system was designed to support both workflows simultaneously. Patients can s
 
 ---
 
-## 4. Challenge 3 — Doctor Autonomy vs. Administrator Control
+## 4. Challenge 3 ï¿½ Doctor Autonomy vs. Administrator Control
 
 **Doctors** expressed a need for autonomy over their own schedules , they want to block off time for breaks, set their own availability, and control how many appointments they take per day. **Administrators**, on the other hand, need oversight of all schedules to ensure the clinic runs efficiently and that no doctor is underbooked or overburdened.
 
 Giving doctors full control over their availability could result in gaps in clinic coverage that administrators are unaware of. Giving administrators full control over doctor schedules could frustrate doctors and reduce their sense of professional autonomy.
 
 **How it was balanced:**
-The system was designed so that doctors can manage their own availability within boundaries set by the administrator — for example, an admin can define core clinic hours during which doctors must remain available, while doctors can adjust their slots within those hours. Administrators retain read-only visibility into all doctor schedules at all times.
+The system was designed so that doctors can manage their own availability within boundaries set by the administrator ï¿½ for example, an admin can define core clinic hours during which doctors must remain available, while doctors can adjust their slots within those hours. Administrators retain read-only visibility into all doctor schedules at all times.
 
 **Lesson Learned:** Hierarchical permission structures - where one stakeholder sets the boundaries and another operates within them , are an effective way to balance competing control needs.
 
 ---
 
-## 5. Challenge 4 — IT Staff Maintainability vs. Feature Richness
+## 5. Challenge 4 ï¿½ IT Staff Maintainability vs. Feature Richness
 
 **IT Support Staff** consistently prioritised simplicity, clean architecture, and thorough documentation over feature volume. They were concerned that adding too many features , such as real-time analytics, SMS integration, and complex role-based access , would make the system harder to maintain and more prone to failure.
 
@@ -58,11 +58,11 @@ In contrast, the **Administrator** and **Patient** stakeholders pushed for a fea
 **How it was balanced:**
 A modular architecture was adopted so that each feature is self-contained and can be updated, replaced, or removed without affecting the rest of the system. This gave IT staff the maintainability they needed while still allowing all requested features to be included. A clear API documentation requirement was also added as a non-functional requirement to address IT staff concerns about future integrations.
 
-**Lesson Learned:** Architecture decisions — not just feature decisions , are a form of stakeholder compromise. A well-structured system can be both feature-rich and maintainable.
+**Lesson Learned:** Architecture decisions ï¿½ not just feature decisions , are a form of stakeholder compromise. A well-structured system can be both feature-rich and maintainable.
 
 ---
 
-## 6. Challenge 5 — Compliance Requirements vs. Project Scope
+## 6. Challenge 5 ï¿½ Compliance Requirements vs. Project Scope
 
 **Medical Regulators** introduced requirements that significantly expanded the original project scope , particularly around audit logging, data retention policies, and encryption standards. Some of these requirements (such as 5-year log retention and full POPIA compliance) are typically addressed at the infrastructure and legal level, not just at the application level.
 
@@ -79,7 +79,7 @@ The requirements were documented in full to reflect real-world compliance needs,
 
 The process of identifying and balancing stakeholder needs for PulsePoint revealed that requirements engineering is rarely straightforward. Every stakeholder has legitimate concerns, and many of those concerns directly conflict with one another. The key insight from this process is that **there is rarely a perfect solution** , only well-reasoned trade-offs that prioritise the most critical needs while transparently documenting what could not be fully addressed.
 
-The most valuable skill developed through this exercise was learning to look at the same system from multiple perspectives simultaneously — as a patient, as a doctor, as a compliance officer, and as a developer — and finding designs that serve all of them as effectively as possible.
+The most valuable skill developed through this exercise was learning to look at the same system from multiple perspectives simultaneously ï¿½ as a patient, as a doctor, as a compliance officer, and as a developer ï¿½ and finding designs that serve all of them as effectively as possible.
 
 ---
 
@@ -89,6 +89,72 @@ The most valuable skill developed through this exercise was learning to look at 
 |---|---|---|
 | Convenience vs. Security | Patient vs. Regulators | Background security measures that don't impact UX |
 | Self-service vs. Staff Control | Patient vs. Receptionist | Dual-access booking system supporting both workflows |
-| Doctor Autonomy vs. Admin Oversight | Doctor vs. Administrator | Bounded availability — doctors manage within admin-set hours |
+| Doctor Autonomy vs. Admin Oversight | Doctor vs. Administrator | Bounded availability ï¿½ doctors manage within admin-set hours |
 | Feature Richness vs. Maintainability | Admin/Patient vs. IT Staff | Modular architecture isolating each feature |
 | Full Compliance vs. Project Scope | Regulators vs. Individual Developer | In-scope compliance features documented; future items noted |
+
+----------------------------------------------------------------------------------------------------------
+# REFLECTION5.md â€” Challenges in Translating Requirements to Use Cases and Test Cases
+
+**Project:** PulsePoint â€” Patient Appointment & Records System
+**Assignment:** 5 â€” Use Case Modeling and Test Case Development
+
+---
+
+## 1. Introduction
+
+Translating stakeholder requirements into use case diagrams, detailed use case specifications, and test cases is one of the most demanding phases of the software engineering process. While requirements describe *what* the system must do, use cases describe *how* users interact with the system to achieve those goals, and test cases define *how* we verify that those interactions work correctly. This reflection documents the key challenges encountered during this translation process for the PulsePoint system and the lessons learned along the way.
+
+---
+
+## 2. Challenge 1 â€” Deciding Which Use Cases Were Critical
+
+The first challenge was deciding which use cases to include in the diagram and which 8 to expand into full specifications. PulsePoint has many possible interactions , a patient alone can register, log in, search for doctors, book, reschedule, cancel, view records, and receive SMS reminders. Including every possible interaction in a single diagram risks making it unreadable and overwhelming.
+
+The approach taken was to prioritise use cases that directly addressed the highest-priority stakeholder concerns identified in Assignment 4. For example, booking an appointment was clearly a high-priority use case because it addressed the Patient's core pain point of inconvenient phone-based scheduling. Similarly, creating medical records was prioritised because it addressed the Doctor's concern about fragmented paper-based record keeping.
+
+This process required careful cross-referencing between the stakeholder analysis, functional requirements, and the use case diagram â€” making it clear that requirements engineering is not a linear process but a constantly iterative one.
+
+---
+
+## 3. Challenge 2 â€” Modelling Include Relationships Correctly
+
+One of the most technically challenging aspects of creating the use case diagram was correctly identifying and modelling the include relationships between use cases. An include relationship means that one use case always depends on another to function.
+
+The most significant include relationship in PulsePoint is that almost every use case includes Login to System , because authentication is a prerequisite for nearly all system actions. Initially, drawing an include arrow from every use case to Login to System made the diagram extremely cluttered and difficult to read. The challenge was finding a balance between technical accuracy and visual clarity.
+
+The solution was to show the most important include relationships , such as Book Appointment including Login to System and Book Appointment including Search for Doctor , while noting in the written explanation that authentication is a universal precondition across the system. This taught an important lesson about the difference between a technically complete diagram and a practically useful one.
+
+---
+
+## 4. Challenge 3 â€” Writing Meaningful Alternative Flows
+
+Writing the basic flow for each use case was relatively straightforward , it simply described the ideal success scenario step by step. The real challenge was writing meaningful alternative flows that covered realistic error paths without becoming repetitive or trivial.
+
+For example, for the Book Appointment use case, it was easy to identify that a patient might search for a doctor and find no results. However, a more subtle alternative flow was the scenario where a time slot becomes unavailable between the moment the patient selects it and the moment they confirm the booking , a race condition that occurs in real booking systems with multiple concurrent users. Identifying this kind of scenario required thinking beyond the happy path and considering real-world system behaviour under concurrent usage.
+
+This challenge highlighted that writing good alternative flows requires both technical knowledge of how systems behave and empathy for the range of situations real users encounter.
+
+---
+
+## 5. Challenge 4 â€” Tracing Test Cases Back to Requirements
+
+Developing test cases that were genuinely traceable to the functional requirements from Assignment 4 was more difficult than expected. The temptation was to write generic test cases such as "verify the login page works" without linking them to a specific requirement. However, the assignment rubric required test cases to directly address stakeholder needs, which meant each test case had to be anchored to a named requirement.
+
+To address this, every test case was mapped back to a specific functional requirement from Assignment 4 , for example, TC005 traces directly to Functional Requirement 03 (Appointment Booking) and TC010 traces to Functional Requirement 12 (Audit Trail Logging). This traceability ensured that the test cases were purposeful and covered the system's most critical behaviours rather than being arbitrarily selected.
+
+---
+
+## 6. Challenge 5 â€” Defining Non-Functional Test Scenarios
+
+Defining test scenarios for non-functional requirements was particularly challenging because non-functional requirements deal with qualities like performance and security rather than specific features. Unlike functional tests where you can follow clear steps and check an expected output, non-functional tests require specialised tools and more complex setup.
+
+For the performance test, determining a realistic load figure required referencing the scalability requirement from Assignment 4 which specified 500 concurrent users. For the security test, the challenge was designing a test that genuinely attempted to breach the role-based access control rather than simply confirming that a logged-in user can see their own records. This required thinking like an attacker â€” using a valid JWT token to attempt access to another user's data via direct API manipulation.
+
+---
+
+## 7. Conclusion
+
+The process of translating requirements into use cases and test cases revealed that these are not mechanical tasks but require significant analytical thinking. Every decision , which use cases to include, how to model relationships, which alternative flows to document, and how to trace tests back to requirements , involves judgement calls that directly affect the quality of the final system. The most important lesson from this assignment is that good software engineering is not just about writing code, but about thoroughly understanding and modelling the system before a single line of code is written.
+
+---
