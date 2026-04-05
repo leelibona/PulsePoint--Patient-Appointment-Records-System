@@ -158,3 +158,55 @@ For the performance test, determining a realistic load figure required referenci
 The process of translating requirements into use cases and test cases revealed that these are not mechanical tasks but require significant analytical thinking. Every decision , which use cases to include, how to model relationships, which alternative flows to document, and how to trace tests back to requirements , involves judgement calls that directly affect the quality of the final system. The most important lesson from this assignment is that good software engineering is not just about writing code, but about thoroughly understanding and modelling the system before a single line of code is written.
 
 ---
+# REFLECTION6.md — Challenges in Agile Planning for PulsePoint
+
+**Assignment:** 6 — Agile User Stories, Backlog, and Sprint Planning
+
+---
+
+## 1. Introduction
+
+The agile approach provides a lot of flexibility, iterations, and improvements. Nevertheless, the implementation of agile principles into an individual project presented me with a particular kind of problems that one does not usually find in books on the topic, problems that do not arise due to conflicts within the group or with stakeholders but because of internal opposition and personal fears. This reflective paper describes my experience dealing with such issues while implementing an agile plan for PulsePoint.
+
+---
+
+## 2. Challenge 1 — Playing Multiple Scrum Roles Alone
+
+In a real Agile team, the Product Owner, Scrum Master, and Developer are three different people who have different points of view and duties. The Product Owner puts business value first, the Scrum Master makes the process easier, and the Developer figures out how much work is needed based on how hard it is. One person had to play all three roles at the same time for PulsePoint.
+
+This made me feel like I was always at war with myself. As the Product Owner, I wanted to add as many features as possible to the first sprint to show that the system was working. As the Developer, the truth was that one person could not realistically finish 14 user stories with complicated backend logic, database design, API development, and frontend implementation in two weeks. As the Scrum Master, it was your job to help make a sprint plan that was realistic and doable.
+
+To solve this problem, we had to take a step back and really commit to the Agile principle of delivering a small but working increment instead of a big but incomplete one. It was harder than I thought it would be to admit that only 6 user stories could be done in Sprint 1. It felt like not delivering enough. Choosing a focused and doable sprint is a sign of Agile maturity, not weakness.
+---
+
+## 3. Challenge 2 — Estimating Story Points Without a Team
+
+Planning Poker and other methods that involve team members debating and agreeing on effort estimates are common ways to estimate story points in Agile. When I worked alone, there was no one to question or check my estimates, which made them very likely to be wrong.
+
+It was easy to think that tasks that seemed easy, like making a login form, would take less work than they actually did, and that tasks that seemed hard, like integrating the Twilio API, would take more work than they actually did. These biases could go unchecked and lead to a sprint plan that was either too optimistic or too cautious if there wasn't a team to push back.
+
+To handle this, each task was split up into the smallest parts possible before hours were given. Instead of estimating "implement authentication" as a single 10-hour task, it was broken down into smaller tasks for the API endpoint, bcrypt integration, JWT token generation, and React UI, each with its own estimate. This detailed method cut down on bias and gave a more accurate total of 57 hours across 15 tasks for Sprint 1.
+---
+
+
+# 4. Challenge 3 — Prioritising Features Without External Stakeholder Input
+
+When real stakeholders can confirm which features are really important, MoSCoW prioritization works best. There were no real patients, doctors, or administrators to talk to about PulsePoint because it was a single project. All decisions about what to put first had to be based on the stakeholder analysis from Assignment 4 and your own judgment.
+
+It was hardest to decide whether to include the analytics dashboard in Sprint 1. It was tempting to add it as a developer because it is fun to build. But when you really think like a product owner, it becomes clear that an administrator can't use analytics until there are real appointments in the system. This means that there need to be patients, doctors, booking functionality, and medical records first. Because of this logical dependency, the analytics dashboard was put in the "Should-have" category instead of the "Must-have" category, and it was put off until a later sprint.
+
+This experience showed that good prioritization means putting aside personal preferences and focusing on what gives the end user the most value at each stage of development.
+
+---
+
+## 5. Challenge 4 — Maintaining Traceability Across Three Assignments
+
+One of the most technically demanding aspects of Assignment 6 was ensuring that every user story traced back to a specific functional requirement from Assignment 4 and a specific use case from Assignment 5. This required constantly cross-referencing three separate documents and ensuring that nothing was invented from scratch.
+
+There were times when we didn't want to check if our user stories matched up with what we were supposed to be doing. It would have been easier to just write them without worrying about it. But we had a traceability matrix at the end of our AGILE-PLANNING.md document that kept us in line. This matrix helped us make sure our user stories were good quality. If a story didn't match up with something we were supposed to be doing, we either changed it or got rid of it. This way, our backlog was based on what our stakeholders actually needed, not just what we thought they needed.
+
+---
+
+## 6. Conclusion
+
+Planning as a solo developer is really different from doing it in a team. The hardest part isn't about the tech ,it's about being honest with yourself. You need to be disciplined, humble, and aware of your own biases when you're making plans and prioritizing tasks. I've learned a lot from working on PulsePoint, and I now see why certain planning steps, like sprint planning and retrospectives, are so important. They're not just formalities, they help keep your development on track, realistic, and focused on what really matters. When you're working alone, it can be tough to stay grounded and make sure you're delivering something valuable. But with the right mindset and tools, you can make it work. It's all about being self-aware, recognizing your strengths and weaknesses, and being willing to adjust your plans accordingly. By doing so, you can create a development process that's tailored to your needs and helps you achieve your goals. In the end, planning as a solo developer requires a unique set of skills and mindset. It's not just about following a set of rules or procedures , it's about being adaptable, resilient, and committed to delivering high-quality results. With practice and experience, you can develop the skills and habits needed to succeed as a solo developer, and make the most out of your planning process.
