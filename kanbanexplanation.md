@@ -75,3 +75,8 @@ Two custom columns were added to the default Kanban template to better suit the 
 - **Testing** was added because the Definition of Done requires all API endpoints and UI components to be tested before a story is considered complete. Without this column, completed development work and verified work would both sit in Done, making it impossible to distinguish between tasks that are finished and tasks that are finished and tested.
 
 - **Blocked** was added because PulsePoint has several tasks with dependencies — for example, the booking API depends on the doctor search API, and the SMS integration depends on the booking API. Having a dedicated Blocked column makes these dependency issues immediately visible rather than hiding them inside the In Progress column where they would inflate the WIP count unfairly.
+
+
+# Kanban board Screenshot
+
+![PulsePoint Kanban Board](kanbanboard.png)
