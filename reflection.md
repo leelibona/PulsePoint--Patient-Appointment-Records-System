@@ -274,3 +274,63 @@ For PulsePoint at this stage of development, GitHub Projects is the most appropr
 This assignment demonstrated that effective project management is not just about having the right tools — it is about understanding how to use them appropriately for the context. The process of selecting a template, customising the board, and populating it with Sprint 1 tasks brought the Agile planning from Assignment 6 to life in a practical, visual way. The challenges encountered — from template selection to label creation — were all valuable learning experiences that deepened the understanding of how professional software teams manage their work.
 
 ---
+# REFLECTION8.md — Challenges in Object State Modeling and Activity Workflow Modeling
+
+**Assignment:** 8 — Object State Modeling and Activity Workflow Modeling
+
+---
+
+## 1. Introduction
+
+Creating state transition diagrams and activity diagrams for PulsePoint was a significantly more demanding task than the previous assignments. While earlier assignments focused on describing what the system should do through requirements and user stories, this assignment required modelling exactly how the system behaves at a dynamic level — capturing every state an object can be in and every step a workflow can follow. This reflection documents the key challenges encountered during this process and the lessons learned from comparing the two diagram types.
+
+---
+
+## 2. Challenge 1 — Choosing the Right Level of Granularity
+
+The most persistent challenge throughout this assignment was deciding how much detail to include in each diagram. Every object and workflow in PulsePoint could theoretically be broken down into dozens of micro-states or steps, but a diagram that is too detailed becomes unreadable and loses its value as a communication tool. On the other hand, a diagram that is too high-level fails to capture important edge cases and alternative flows.
+
+For the Appointment state diagram, the initial version only had four states — Pending, Confirmed, Completed, and Cancelled. However, on reflection, this missed several important real-world scenarios such as the NoShow state, the Rescheduled state, and the Failed state when a slot becomes unavailable during the booking process. Adding these states made the diagram more accurate but also more complex.
+
+The balance was found by asking a simple question for each proposed state or step: "Does this state or action change what the system can do next?" If the answer was yes, it was included. If it was simply a sub-step within an existing state, it was left out. This principle of meaningful granularity — including only states and steps that affect system behaviour — produced diagrams that were both detailed enough to be useful and simple enough to be readable.
+
+---
+
+## 3. Challenge 2 — Modelling Parallel Actions in Activity Diagrams
+
+Several of PulsePoint's workflows involve actions that happen simultaneously rather than sequentially. For example, when a patient successfully books an appointment, the system displays a confirmation screen to the patient at the same time as it sends an SMS via Twilio. These concurrent actions were challenging to represent clearly in Mermaid's flowchart syntax, which is primarily designed for sequential flows.
+
+The solution was to use separate swimlanes for each actor — Patient, System, and Twilio — and show the parallel paths branching from the same trigger point. This made it visually clear that the SMS sending and the confirmation screen display are independent actions triggered by the same event, rather than one waiting for the other to complete.
+
+This experience highlighted an important real-world design consideration — if the SMS delivery is slow or fails, it should not delay the confirmation screen from appearing to the patient. Modelling the parallel actions explicitly in the diagram helped clarify this architectural requirement in a way that a written requirement alone could not.
+
+---
+
+## 4. Challenge 3 — Aligning Diagrams with Agile User Stories
+
+One of the assignment requirements was to ensure every diagram traced back to a specific user story from Assignment 6. This proved challenging for some diagrams because user stories are written from a user's perspective — "As a patient, I want to book an appointment" — while activity diagrams model the system's internal behaviour in detail, including steps the user never sees such as database writes, password hashing, and audit log creation.
+
+The challenge was bridging the gap between the high-level user intent expressed in a user story and the low-level system behaviour captured in an activity diagram. The approach taken was to map each diagram to the user story that most directly motivated it, while acknowledging in the explanation that the diagram covers additional system behaviour beyond what the user story explicitly describes.
+
+This process reinforced the Agile principle that user stories are not technical specifications — they are expressions of user need. The technical detail lives in the diagrams and implementation, not in the story itself.
+
+---
+
+## 5. Comparing State Diagrams and Activity Diagrams
+
+State transition diagrams and activity diagrams serve fundamentally different purposes, and understanding the distinction between them was one of the most valuable lessons from this assignment.
+
+A **state transition diagram** focuses on a single object and asks: "What states can this object be in, and what causes it to change from one state to another?" It is object-centric. The Appointment state diagram, for example, does not care about who triggers the transition — it only cares that the Appointment object moves from Confirmed to Cancelled when a cancellation event occurs.
+
+An **activity diagram** focuses on a process and asks: "What steps are involved in completing this workflow, and who is responsible for each step?" It is process-centric and actor-aware. The Book Appointment activity diagram shows not just what happens, but who does each thing — the Patient selects a slot, the System validates availability, and Twilio sends the SMS.
+
+In practice, the two diagram types complement each other. The state diagram answers "what can happen to this object?" while the activity diagram answers "how does it happen, and who makes it happen?" Together they provide a complete picture of the system's dynamic behaviour — one from the perspective of the data, and one from the perspective of the process.
+
+---
+
+## 6. Conclusion
+
+This assignment deepened the understanding of dynamic system modelling in ways that static diagrams like C4 architecture and use case diagrams cannot. Seeing an Appointment object move through eight distinct states, or watching a booking workflow branch across three swimlanes with parallel actions and retry logic, makes the system feel tangible and real in a way that a list of requirements never could. The challenges of granularity, parallel actions, and traceability to user stories all pushed towards more thoughtful and precise modelling — skills that will be directly applicable when the actual implementation of PulsePoint begins.
+
+---
+
