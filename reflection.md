@@ -210,3 +210,67 @@ There were times when we didn't want to check if our user stories matched up wit
 ## 6. Conclusion
 
 Planning as a solo developer is really different from doing it in a team. The hardest part isn't about the tech ,it's about being honest with yourself. You need to be disciplined, humble, and aware of your own biases when you're making plans and prioritizing tasks. I've learned a lot from working on PulsePoint, and I now see why certain planning steps, like sprint planning and retrospectives, are so important. They're not just formalities, they help keep your development on track, realistic, and focused on what really matters. When you're working alone, it can be tough to stay grounded and make sure you're delivering something valuable. But with the right mindset and tools, you can make it work. It's all about being self-aware, recognizing your strengths and weaknesses, and being willing to adjust your plans accordingly. By doing so, you can create a development process that's tailored to your needs and helps you achieve your goals. In the end, planning as a solo developer requires a unique set of skills and mindset. It's not just about following a set of rules or procedures , it's about being adaptable, resilient, and committed to delivering high-quality results. With practice and experience, you can develop the skills and habits needed to succeed as a solo developer, and make the most out of your planning process.
+
+# REFLECTION7.md — Challenges in Selecting and Customising the GitHub Project Template
+
+**Assignment:** 7 — GitHub Project Templates and Kanban Board Implementation
+
+---
+
+## 1. Introduction
+
+Setting up a Kanban board on GitHub Projects seemed straightforward at first — choose a template, add some columns, and populate it with tasks. In practice, however, the process raised several interesting challenges around template selection, customisation decisions, and understanding how GitHub's project management tools compare to more established tools like Trello and Jira. This reflection documents those challenges honestly and draws lessons from the experience.
+
+---
+
+## 2. Challenge 1 — Choosing the Right Template
+
+The first challenge was selecting the most appropriate template from GitHub's available options. GitHub offers several templates including Team Planning, Kanban, Feature Release, Bug Tracker, Iterative Development, Roadmap, and Team Retrospective. Each template is designed for a different context, and choosing the wrong one would result in a board that does not reflect the actual development workflow.
+
+The initial instinct was to select the **Team Planning** template because it had the most columns and appeared the most comprehensive. However, on closer inspection, Team Planning is designed for larger teams managing work across multiple sprints and team members. For a solo project like PulsePoint, the additional columns added unnecessary complexity rather than clarity.
+
+The **Kanban** template was ultimately chosen because it is the only template with built-in WIP limit support — a core Kanban principle explicitly mentioned in the assignment brief. Its default columns of To Do, In Progress, and Done provided a clean starting point that could be extended with the custom Testing and Blocked columns to match the PulsePoint workflow.
+
+The lesson learned here is that more features do not always mean a better tool. Choosing the simplest template that meets the project's actual needs is always better than choosing the most feature-rich one.
+
+---
+
+## 3. Challenge 2 — Deciding Which Custom Columns to Add
+
+The assignment required adding at least two custom columns to the board. The challenge was deciding which columns would genuinely improve the workflow rather than adding columns for the sake of it.
+
+Several options were considered — Review, Deployed, Backlog, and On Hold — before settling on **Testing** and **Blocked**. Testing was chosen because the Definition of Done from Assignment 6 explicitly requires all tasks to be tested before they are considered complete. Without a Testing column, there would be no way to distinguish between tasks that are finished and tasks that are finished and verified — a critical distinction in software development.
+
+Blocked was chosen because PulsePoint's Sprint 1 tasks have clear dependencies. For example, the appointment booking API cannot be built until the doctor search API is complete, and the SMS integration cannot be implemented until the booking API exists. A Blocked column makes these dependency issues immediately visible on the board rather than hiding them inside the In Progress column.
+
+---
+
+## 4. Challenge 3 — Setting Up Issues and Labels on GitHub
+
+One of the most practically challenging parts of this assignment was setting up GitHub Issues correctly. GitHub does not come with all the labels needed for a development project — labels like `feature` and `in-progress` had to be created manually before they could be applied to issues.
+
+Additionally, linking issues to the project board required navigating between the repository's Issues tab and the Projects tab, which was initially confusing. Understanding that issues are created in the repository but managed on the project board — and that these are two separate but connected spaces — took some time to grasp.
+
+This experience highlighted that GitHub Projects is a powerful tool but has a steeper learning curve than it initially appears. The interface is not entirely intuitive for first-time users, and understanding the relationship between repositories, issues, and projects requires hands-on exploration.
+
+---
+
+## 5. Comparing GitHub Projects to Trello and Jira
+
+Having worked with GitHub Projects for this assignment, it is worth comparing it to two other widely used project management tools — Trello and Jira.
+
+**Trello** is the simplest of the three. It uses a straightforward card-and-column interface that anyone can learn in minutes. Its strength is simplicity — drag and drop cards across columns with no setup required. However, Trello lacks deep integration with code repositories, meaning there is no automatic connection between a Trello card and a GitHub commit or pull request. For a software development project, this disconnect is a significant limitation.
+
+**Jira** is the most powerful of the three and is the industry standard for large Agile teams. It supports full sprint planning, burndown charts, velocity tracking, epics, and detailed reporting. However, Jira is complex and expensive for small projects. Its interface can be overwhelming, and setting it up correctly for a solo project requires more effort than the value it delivers.
+
+**GitHub Projects** sits comfortably between the two. It integrates directly with the repository, meaning issues, pull requests, and commits are all connected to the board without any additional configuration. It is free, accessible, and sufficient for managing a semester-long solo project. Its main limitation compared to Jira is the lack of advanced reporting features like burndown charts and velocity tracking, which would be valuable for monitoring sprint progress.
+
+For PulsePoint at this stage of development, GitHub Projects is the most appropriate tool — it provides enough structure to manage the sprint without the overhead of Jira or the disconnect of Trello.
+
+---
+
+## 6. Conclusion
+
+This assignment demonstrated that effective project management is not just about having the right tools — it is about understanding how to use them appropriately for the context. The process of selecting a template, customising the board, and populating it with Sprint 1 tasks brought the Agile planning from Assignment 6 to life in a practical, visual way. The challenges encountered — from template selection to label creation — were all valuable learning experiences that deepened the understanding of how professional software teams manage their work.
+
+---
