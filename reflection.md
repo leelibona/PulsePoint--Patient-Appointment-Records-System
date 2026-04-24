@@ -334,3 +334,67 @@ This assignment deepened the understanding of dynamic system modelling in ways t
 
 ---
 
+# REFLECTION9.md — Domain Modeling and Class Diagram Development
+
+**Assignment:** 9  
+
+---
+
+## 1. Introduction  
+
+This reflection discusses the process of designing the domain model and class diagram for the PulsePoint system. It highlights the challenges encountered, alignment with previous assignments, design trade-offs, and key lessons learned about object-oriented design.
+
+---
+
+## 2. Challenges Faced  
+
+One of the main challenges encountered during the design process was determining the correct level of abstraction for the system entities. The PulsePoint system includes several interconnected components such as users, appointments, medical records, and notifications. It was initially difficult to decide how much detail to include in each class without making the model overly complex. For example, deciding whether to merge all user types into a single class or separate them into Patient, Doctor, and Administrator required careful consideration.
+
+Another challenge was defining relationships between entities accurately. The system contains multiple types of relationships, including association, aggregation, and composition. Differentiating between these relationships was not always straightforward. For instance, understanding that MedicalRecord should have a composition relationship with Patient required recognising that medical records cannot exist independently of a patient. Similarly, distinguishing aggregation between User and AuditLog required understanding that audit logs persist independently for compliance purposes.
+
+Handling multiplicity was also challenging. Ensuring that relationships such as one patient having multiple appointments, while each appointment is linked to only one patient and one doctor, required careful analysis. Incorrect multiplicity could result in unrealistic system behaviour.
+
+Additionally, incorporating business rules into the model presented some difficulty. Constraints such as preventing double booking of time slots and restricting appointment cancellations to at least two hours before the scheduled time needed to be reflected clearly in both the domain model and the class diagram.
+
+---
+
+## 3. Alignment with Previous Assignments  
+
+The class diagram and domain model are closely aligned with the requirements, use cases, and state diagrams developed in previous assignments. The functional requirements defined earlier, such as user registration, appointment booking, medical record management, and SMS notifications, are directly represented as methods within the respective classes.
+
+For example, the Appointment class reflects use cases from the booking and scheduling processes, including methods such as book(), cancel(), and reschedule(). These methods correspond directly to the behaviours illustrated in the appointment state diagram. Similarly, the MedicalRecord class aligns with requirements related to electronic medical record (EMR) creation and management, as well as audit logging.
+
+The TimeSlot entity was included to support the scheduling logic defined in earlier assignments. It ensures that appointments are properly managed and prevents conflicts, which is consistent with the system’s activity and state diagrams.
+
+Furthermore, the inclusion of the AuditLog entity reflects non-functional requirements related to security and compliance, particularly the need for tracking all actions performed on sensitive medical data.
+
+---
+
+## 4. Design Trade-offs  
+
+Several trade-offs were made during the design process. One key decision was introducing a base User class with inheritance for Patient, Doctor, and Administrator. While this approach improves reusability and reduces duplication, it also adds complexity to the model. An alternative approach would have been to define separate classes without inheritance, which would simplify the diagram but lead to repeated attributes.
+
+Another trade-off involved the level of detail in the class diagram. Including all attributes and methods from the domain model increases accuracy but can make the diagram more complex and harder to read. A balance was therefore maintained by focusing on key attributes and behaviours that are essential to system functionality.
+
+The decision to separate MedicalRecord from Appointment was also important. While it could have been embedded within Appointment, creating it as a separate class improves scalability and follows the principle of separation of concerns.
+
+Additionally, the use of TimeSlot as a separate entity introduces extra complexity but ensures better control over scheduling and prevents double booking, which is a critical requirement of the system.
+
+---
+
+## 5. Lessons Learned  
+
+This assignment provided valuable insights into object-oriented design and system modelling. One key lesson learned is the importance of clearly defining relationships between entities. Understanding when to use association, aggregation, or composition is essential for accurately modelling real-world systems.
+
+Another important lesson is the value of abstraction. Breaking down the system into smaller, well-defined classes makes it easier to understand, maintain, and extend. The use of inheritance in the User hierarchy demonstrated how shared functionality can be reused effectively.
+
+I also learned that aligning all design artifacts is crucial. The domain model, class diagram, use cases, and state diagrams must all reflect the same system behaviour. Inconsistencies between these artifacts can lead to confusion and implementation issues.
+
+Finally, this assignment highlighted the importance of incorporating business rules into system design. Constraints such as appointment scheduling rules and data security requirements are not just implementation details but fundamental aspects of the system that must be represented in the design.
+
+---
+
+## 6. Conclusion  
+
+Overall, the process of developing the domain model and class diagram for the PulsePoint system was both challenging and rewarding. It improved my understanding of object-oriented principles, UML modelling, and the importance of designing systems that accurately reflect real-world processes. The final design provides a solid foundation for system implementation and future enhancements.
+
