@@ -1,206 +1,225 @@
-﻿# Class Diagram – PulsePoint Patient Appointment & Records System  
+﻿# CLASS-DIAGRAM.md — PulsePoint System Class Diagram
+
+**Project:** PulsePoint — Patient Appointment & Records System
+**Assignment:** 9 — Domain Modeling and Class Diagram Development
 
 ---
 
-## 1. Mermaid.js Class Diagram  
+## 1. Introduction
+
+This document presents the full UML class diagram for the PulsePoint system using Mermaid.js. The diagram models all core classes, their attributes and methods, and the relationships between them including associations, compositions, aggregations, and inheritance. The diagram is aligned with the functional requirements from Assignment 4, the use cases from Assignment 5, and the state and activity diagrams from Assignment 8.
+
+---
+
+## 2. Class Diagram
 
 ```mermaid
 classDiagram
 
-## ======================
-## BASE CLASS (INHERITANCE)
-## ======================
+    %% ─── INHERITANCE ───────────────────────────────────────────
+    class User {
+        -userId: String
+        -email: String
+        -passwordHash: String
+        -role: String
+        -createdAt: Date
+        -isActive: Boolean
+        +login() Boolean
+        +logout() void
+        +resetPassword(newPassword: String) void
+        +deactivateAccount() void
+    }
 
-class User {
-    -userId: String
-    -fullName: String
-    -email: String
-    -passwordHash: String
-    -phone: String
-    -role: String
-    -status: String
-    +register()
-    +login()
-    +logout()
-    +deactivate()
-    +reactivate()
-}
+    class Patient {
+        -patientId: String
+        -firstName: String
+        -lastName: String
+        -phone: String
+        -dateOfBirth: Date
+        -gender: String
+        +register() void
+        +bookAppointment(doctorId: String, slot: TimeSlot) Appointment
+        +rescheduleAppointment(appointmentId: String, newSlot: TimeSlot) void
+        +cancelAppointment(appointmentId: String) void
+        +viewMedicalRecords() List~MedicalRecord~
+        +searchDoctor(query: String) List~Doctor~
+    }
 
-class Patient {
-    -dateOfBirth: Date
-    -gender: String
-    -profileStatus: String
-    +updateProfile()
-    +viewMedicalRecords()
-    +searchDoctors()
-}
+    class Doctor {
+        -doctorId: String
+        -firstName: String
+        -lastName: String
+        -specialisation: String
+        -phone: String
+        +viewSchedule() List~Appointment~
+        +markAppointmentStatus(appointmentId: String, status: String) void
+        +createMedicalRecord(appointmentId: String, details: RecordDetails) MedicalRecord
+        +updateAvailability(slots: List~TimeSlot~) void
+        +viewPatientHistory(patientId: String) List~MedicalRecord~
+    }
 
-class Doctor {
-    -specialisation: String
-    -qualifications: String
-    +viewSchedule()
-    +markAppointmentStatus()
-    +createMedicalRecord()
-}
+    class Administrator {
+        -adminId: String
+        -firstName: String
+        -lastName: String
+        +createDoctorAccount(details: DoctorDetails) Doctor
+        +deactivateAccount(userId: String) void
+        +reactivateAccount(userId: String) void
+        +viewAnalytics() AnalyticsReport
+        +viewAuditLogs() List~AuditLog~
+        +exportReport(format: String) File
+    }
 
-class Administrator {
-    +createDoctor()
-    +manageUsers()
-}
+    User <|-- Patient : extends
+    User <|-- Doctor : extends
+    User <|-- Administrator : extends
 
-User <|-- Patient
-User <|-- Doctor
-User <|-- Administrator
+    %% ─── APPOINTMENT ────────────────────────────────────────────
+    class Appointment {
+        -appointmentId: String
+        -appointmentDate: Date
+        -timeSlot: String
+        -status: String
+        -createdAt: Date
+        -updatedAt: Date
+        +confirm() void
+        +reschedule(newSlot: TimeSlot) void
+        +cancel() void
+        +markInProgress() void
+        +markCompleted() void
+        +markNoShow() void
+        +getStatus() String
+    }
 
-## ======================
-## CORE CLASSES
-## ======================
+    %% ─── MEDICAL RECORD ─────────────────────────────────────────
+    class MedicalRecord {
+        -recordId: String
+        -diagnosis: String
+        -consultationNotes: String
+        -prescription: String
+        -recordDate: Date
+        -createdAt: Date
+        -updatedAt: Date
+        +create(details: RecordDetails) void
+        +update(details: RecordDetails) void
+        +view() RecordDetails
+        +linkToAppointment(appointmentId: String) void
+    }
 
-class Appointment {
-    -appointmentId: String
-    -status: String
-    -createdAt: DateTime
-    +book()
-    +confirm()
-    +reschedule()
-    +cancel()
-    +markNoShow()
-    +startConsultation()
-    +complete()
-}
+    %% ─── TIME SLOT ──────────────────────────────────────────────
+    class TimeSlot {
+        -slotId: String
+        -startTime: Date
+        -endTime: Date
+        -isAvailable: Boolean
+        +reserve() void
+        +release() void
+        +book() void
+        +checkAvailability() Boolean
+    }
 
-class TimeSlot {
-    -slotId: String
-    -date: Date
-    -startTime: String
-    -endTime: String
-    -status: String
-    +reserve()
-    +book()
-    +release()
-    +markCompleted()
-}
+    %% ─── NOTIFICATION ───────────────────────────────────────────
+    class Notification {
+        -notificationId: String
+        -message: String
+        -recipientPhone: String
+        -status: String
+        -sentAt: Date
+        -retryCount: Integer
+        +send() void
+        +retry() void
+        +logDeliveryStatus(status: String) void
+    }
 
-class MedicalRecord {
-    -recordId: String
-    -diagnosis: String
-    -notes: String
-    -prescription: String
-    -status: String
-    -createdAt: DateTime
-    -updatedAt: DateTime
-    +save()
-    +update()
-    +flagForReview()
-    +resolveFlag()
-}
+    %% ─── AUDIT LOG ──────────────────────────────────────────────
+    class AuditLog {
+        -logId: String
+        -userId: String
+        -action: String
+        -affectedRecordId: String
+        -timestamp: Date
+        -ipAddress: String
+        +create(userId: String, action: String, recordId: String) void
+        +view() LogDetails
+        +flag(reason: String) void
+    }
 
-class SMSNotification {
-    -notificationId: String
-    -message: String
-    -status: String
-    -scheduledAt: DateTime
-    -sentAt: DateTime
-    -retryCount: int
-    +send()
-    +retry()
-    +logFailure()
-}
+    %% ─── ANALYTICS REPORT ───────────────────────────────────────
+    class AnalyticsReport {
+        -reportId: String
+        -generatedAt: Date
+        -totalAppointments: Integer
+        -completionRate: Float
+        -noShowRate: Float
+        -format: String
+        +generate() void
+        +export(format: String) File
+        +applyFilter(filter: ReportFilter) void
+    }
 
-class AuditLog {
-    -logId: String
-    -action: String
-    -affectedRecordId: String
-    -timestamp: DateTime
-    -status: String
-    +createEntry()
-    +archive()
-    +escalate()
-}
+    %% ─── RELATIONSHIPS ──────────────────────────────────────────
 
-## ======================
-## RELATIONSHIPS
-## ======================
+    %% Patient and Doctor associations with Appointment
+    Patient "1" --> "0..*" Appointment : books
+    Doctor "1" --> "0..*" Appointment : manages
 
-## ASSOCIATIONS
-Patient "1" --> "0..*" Appointment : books
-Doctor "1" --> "0..*" Appointment : attends
+    %% Appointment composition with MedicalRecord
+    Appointment "1" *-- "0..1" MedicalRecord : generates
 
-Doctor "1" --> "1..*" TimeSlot : owns
-Appointment "1" --> "1" TimeSlot : uses
+    %% Appointment composition with TimeSlot
+    Appointment "1" *-- "1" TimeSlot : occupies
 
-Appointment "1" --> "0..1" MedicalRecord : produces
-Appointment "1" --> "1..*" SMSNotification : triggers
+    %% Doctor aggregation with TimeSlot
+    Doctor "1" o-- "0..*" TimeSlot : sets availability
 
-## COMPOSITION (strong ownership)
-Patient "1" *-- "0..*" MedicalRecord : owns
+    %% Appointment association with Notification
+    Appointment "1" --> "0..*" Notification : triggers
 
-## AGGREGATION (weak ownership)
-User "1" o-- "0..*" AuditLog : generates
+    %% MedicalRecord association with AuditLog
+    MedicalRecord "1" --> "0..*" AuditLog : generates
 
-## ASSOCIATION (audit tracking)
-MedicalRecord "1" --> "1..*" AuditLog : trackedBy
+    %% Administrator association with AnalyticsReport
+    Administrator "1" --> "0..*" AnalyticsReport : generates
 
-## ======================
-## NOTES
-## ======================
+    %% Patient association with MedicalRecord
+    Patient "1" --> "0..*" MedicalRecord : owns
+```
 
-Note for TimeSlot
-A slot cannot be double-booked.
-It transitions: Available → Reserved → Booked.
-end note
+---
 
-Note for Appointment
-Cancellation and rescheduling must occur
-at least 2 hours before appointment time.
-end note
+## 3. Key Design Decisions
 
-Note for MedicalRecord
-Medical records cannot be deleted.
-All changes must be logged in AuditLog.
-end note
+### 3.1 Inheritance — User as Base Class
+The `User` class serves as the base class for `Patient`, `Doctor`, and `Administrator`. All three share common attributes such as `userId`, `email`, `passwordHash`, `role`, and `isActive`, as well as common methods like `login()`, `logout()`, and `resetPassword()`. Using inheritance here avoids duplication and centralises authentication logic in one place — aligning with the role-based access control requirement from Assignment 4.
 
-Note for SMSNotification
-SMS reminders are sent 24 hours before
-appointments and retried once if failed.
-end note
+### 3.2 Composition — Appointment owns MedicalRecord and TimeSlot
+A `MedicalRecord` cannot exist without an `Appointment` — it is always created in the context of a consultation. Similarly, a `TimeSlot` is always occupied by an `Appointment` once booked. These are modelled as **composition** relationships, meaning the child objects do not exist independently of the parent `Appointment`.
 
-## Explanation of Key Design Decisions
-1. Inheritance (User → Patient, Doctor, Administrator)
-A base User class was introduced to encapsulate shared attributes such as login credentials and contact details. This reduces duplication and ensures consistency across all system users.
+### 3.3 Aggregation — Doctor sets TimeSlot availability
+A `Doctor` sets up `TimeSlot` objects to define their availability, but `TimeSlots` can exist independently of a specific doctor — they are not destroyed if the doctor's account is deactivated. This is modelled as **aggregation** rather than composition.
 
-2. Appointment as a Central Coordination Class
-The Appointment class acts as the core interaction point between Patients and Doctors. It also connects to TimeSlot, MedicalRecord, and SMSNotification, making it the central workflow controller of the system.
+### 3.4 Notification as a Separate Class
+The `Notification` class is kept separate from `Appointment` to encapsulate all SMS-related logic including retry handling and delivery status logging. This aligns with the modular architecture requirement from Assignment 4 and reflects the Twilio integration described in the system specification.
 
-3. Composition for Medical Records
-A composition relationship exists between Patient and MedicalRecord because:
-Medical records cannot exist without a patient
-They are strongly owned and lifecycle-dependent
+### 3.5 AuditLog as an Independent Class
+The `AuditLog` class is independent and immutable — logs can be created and viewed but never modified or deleted. This design decision directly addresses the medical regulator stakeholder's requirement for a tamper-proof audit trail.
 
-4. Aggregation for Audit Logs
+### 3.6 AnalyticsReport as a Separate Class
+Separating `AnalyticsReport` from the `Administrator` class keeps the analytics logic encapsulated and makes it easier to extend in the future — for example, adding scheduled reports or new metrics — without modifying the Administrator class.
 
-AuditLog uses aggregation with User:
-Logs are created by users
-But they exist independently for compliance (POPIA requirement)
+---
 
-5. TimeSlot as a Constraint Mechanism
-The TimeSlot entity ensures:
-No double booking
-Real-time availability control
-Proper scheduling enforcement
+## 4. Relationship Summary
 
-This aligns directly with your business rules.
-
-6. Multiplicity Enforcement
-
-Multiplicity ensures real-world constraints:
-
-One Patient → many Appointments
-One Appointment → one TimeSlot
-One Appointment → optional MedicalRecord
-7. Notes for Business Rules
-
-Important system constraints (like no deletion of records, retry rules, and booking restrictions) are included as notes to:
-
-Improve diagram clarity
-Help markers understand design decisions quickly
+| Relationship | Type | Multiplicity | Description |
+|---|---|---|---|
+| User → Patient, Doctor, Admin | Inheritance | — | Patient, Doctor, and Admin extend the base User class |
+| Patient → Appointment | Association | 1 to 0..* | A patient can have many appointments |
+| Doctor → Appointment | Association | 1 to 0..* | A doctor manages many appointments |
+| Appointment → MedicalRecord | Composition | 1 to 0..1 | An appointment generates at most one medical record |
+| Appointment → TimeSlot | Composition | 1 to 1 | An appointment always occupies exactly one time slot |
+| Doctor → TimeSlot | Aggregation | 1 to 0..* | A doctor sets up many available time slots |
+| Appointment → Notification | Association | 1 to 0..* | An appointment can trigger multiple notifications |
+| MedicalRecord → AuditLog | Association | 1 to 0..* | Every record access or modification generates an audit log |
+| Administrator → AnalyticsReport | Association | 1 to 0..* | An administrator can generate many reports |
+| Patient → MedicalRecord | Association | 1 to 0..* | A patient owns many medical records over time |
