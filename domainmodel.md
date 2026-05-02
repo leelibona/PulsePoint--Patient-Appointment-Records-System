@@ -1,7 +1,6 @@
 ﻿# DOMAIN-MODEL.md — PulsePoint Patient Appointment & Records System
 
 **Assignment:** 9 — Domain Modeling and Class Diagram Development
-**Task:** 1 — Domain Model
 
 ---
 
