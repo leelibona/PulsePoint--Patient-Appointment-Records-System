@@ -1,0 +1,37 @@
+package com.pulsepoint.repositories;
+
+import com.pulsepoint.models.AuditLog;
+import java.util.List;
+
+/**
+ * AuditLog-specific repository interface.
+ * AuditLogs are immutable — delete is intentionally unsupported.
+ */
+public interface AuditLogRepository extends Repository<AuditLog, String> {
+
+    /**
+     * Finds all audit logs for a specific user.
+     */
+    List<AuditLog> findByUserId(String userId);
+
+    /**
+     * Finds all audit logs for a specific affected record.
+     */
+    List<AuditLog> findByAffectedRecordId(String recordId);
+
+    /**
+     * Finds all audit logs with a specific status.
+     */
+    List<AuditLog> findByStatus(String status);
+
+    /**
+     * Delete is intentionally unsupported for AuditLogs.
+     * Throws UnsupportedOperationException to enforce immutability.
+     */
+    @Override
+    default void delete(String id) {
+        throw new UnsupportedOperationException(
+            "Audit logs cannot be deleted. They are retained for compliance purposes."
+        );
+    }
+}
