@@ -74,6 +74,13 @@ Many healthcare facilities still rely on manual, paper-based systems or fragment
 - 🧪 [tests/](./tests/java/com/pulsepoint/) — Unit tests for all creational patterns
 - 📋 [CHANGELOG.md](./CHANGELOG.md) — Summary of all changes and progress
 
+### Assignment 11 — Implementing a Persistence Repository Layer
+- 🗃️ [repositories/](./src/main/java/com/pulsepoint/repositories/) — Generic and entity-specific repository interfaces
+- 💾 [repositories/inmemory/](./src/main/java/com/pulsepoint/repositories/inmemory/) — In-memory HashMap implementations
+- 🔮 [repositories/database/](./src/main/java/com/pulsepoint/repositories/database/) — Database stub implementations for future use
+- 🏭 [factories/RepositoryFactory.java](./src/main/java/com/pulsepoint/factories/RepositoryFactory.java) — Storage abstraction factory
+- 🧪 [tests/RepositoryTest.java](./tests/java/com/pulsepoint/RepositoryTest.java) — 30 unit tests for all repository implementations
+
 ---
 
 ## Language Choice and Key Design Decisions
@@ -97,6 +104,10 @@ Java was chosen as the implementation language for PulsePoint for the following 
 | **`Cloneable` on `TimeSlot`** | `TimeSlot` implements `Cloneable` to support the Prototype design pattern, allowing pre-configured slot templates to be cloned rather than creating new instances from scratch. |
 | **Singleton for Database Connection** | A single shared database connection instance prevents multiple connections from being opened simultaneously, improving performance and preventing data inconsistency. |
 | **Builder for `Appointment`** | Appointments have many optional and required fields. The Builder pattern allows appointments to be constructed step by step, making the creation process readable and preventing invalid partial objects. |
+| **Generic `Repository<T, ID>` interface** | Using Java generics for the base repository interface avoids duplicating CRUD method signatures across every entity-specific repository. All five repositories share the same base contract while adding entity-specific query methods. |
+| **Factory Pattern over Dependency Injection** | The `RepositoryFactory` was chosen over Dependency Injection because PulsePoint is a solo project without a DI framework like Spring. The factory provides the same storage-swapping benefit — changing "MEMORY" to "DATABASE" in one place switches all repositories — without requiring additional framework setup. |
+| **In-Memory HashMap for default storage** | The HashMap implementation requires no external dependencies, making it ideal for unit testing and development. The repository interfaces ensure this can be swapped for a real PostgreSQL database in production without changing any business logic. |
+| **`AuditLog` delete blocked at interface level** | The `AuditLogRepository` interface overrides `delete()` with a default method that throws `UnsupportedOperationException`. This enforces the compliance rule that audit logs cannot be deleted at the architecture level, not just at the application level. |
 
 ---
 
@@ -128,10 +139,14 @@ pulsepoint/
 ├── reflection9.md               # Assignment 9 reflection
 ├── src/
 │   └── main/java/com/pulsepoint/
-│       ├── models/              # All Java model classes
-│       └── creational_patterns/ # All 6 creational design patterns
+│       ├── models/                  # All Java model classes
+│       ├── creational_patterns/     # All 6 creational design patterns
+│       ├── repositories/            # Generic + entity-specific interfaces
+│       │   ├── inmemory/            # HashMap in-memory implementations
+│       │   └── database/            # Database stub implementations
+│       └── factories/               # RepositoryFactory for storage switching
 ├── tests/
-│   └── java/com/pulsepoint/     # Unit tests for all patterns
+│   └── java/com/pulsepoint/         # Unit tests for patterns and repositories
 ├── frontend/                    # React application
 ├── backend/                     # Node.js + Express API
 └── database/                    # PostgreSQL schema and migrations
