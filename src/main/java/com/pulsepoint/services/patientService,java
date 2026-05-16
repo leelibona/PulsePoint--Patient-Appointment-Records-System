@@ -1,0 +1,147 @@
+package com.pulsepoint.services;
+
+import com.pulsepoint.models.Patient;
+import com.pulsepoint.repositories.PatientRepository;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * PatientService — Service Layer for Patient operations.
+ *
+ * Encapsulates all business logic related to patients.
+ * Uses PatientRepository for persistence.
+ * Enforces business rules from the domain model (Assignment 9).
+ */
+public class PatientService {
+
+    private final PatientRepository patientRepository;
+
+    // Dependency Injection — repository is injected via constructor
+    public PatientService(PatientRepository patientRepository) {
+        this.patientRepository = patientRepository;
+    }
+
+    /**
+     * Registers a new patient in the system.
+     * Business Rules:
+     * - Email must be unique
+     * - All required fields must be provided
+     * - Patient must be at least 0 years old (valid date of birth)
+     */
+    public Patient registerPatient(String patientId, String fullName, String email,
+                                    String passwordHash, String phone,
+                                    LocalDate dateOfBirth, String gender) {
+        // Validate required fields
+        if (fullName == null || fullName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Full name is required.");
+        }
+        if (email == null || email.trim().isEmpty()) {
+            throw new IllegalArgumentException("Email is required.");
+        }
+        if (phone == null || phone.trim().isEmpty()) {
+            throw new IllegalArgumentException("Phone number is required.");
+        }
+        if (dateOfBirth == null) {
+            throw new IllegalArgumentException("Date of birth is required.");
+        }
+        if (dateOfBirth.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Date of birth cannot be in the future.");
+        }
+
+        // Check for duplicate email
+        Optional<Patient> existing = patientRepository.findByEmail(email);
+        if (existing.isPresent()) {
+            throw new IllegalStateException("An account with email " + email + " already exists.");
+        }
+
+        // Create and save the patient
+        Patient patient = new Patient(
+            patientId, fullName, email, passwordHash,
+            phone, dateOfBirth, gender
+        );
+        patientRepository.save(patient);
+        System.out.println("Patient registered: " + fullName);
+        return patient;
+    }
+
+    /**
+     * Retrieves a patient by their ID.
+     * Throws exception if not found.
+     */
+    public Patient getPatientById(String patientId) {
+        return patientRepository.findById(patientId)
+            .orElseThrow(() -> new IllegalArgumentException(
+                "Patient not found with ID: " + patientId
+            ));
+    }
+
+    /**
+     * Retrieves a patient by their email address.
+     */
+    public Patient getPatientByEmail(String email) {
+        return patientRepository.findByEmail(email)
+            .orElseThrow(() -> new IllegalArgumentException(
+                "Patient not found with email: " + email
+            ));
+    }
+
+    /**
+     * Returns all registered patients.
+     */
+    public List<Patient> getAllPatients() {
+        return patientRepository.findAll();
+    }
+
+    /**
+     * Returns all active patients.
+     */
+    public List<Patient> getAllActivePatients() {
+        return patientRepository.findAllActive();
+    }
+
+    /**
+     * Updates a patient's profile information.
+     * Business Rule: Patient must exist before updating.
+     */
+    public Patient updatePatient(String patientId, String phone, String gender) {
+        Patient patient = getPatientById(patientId);
+        patient.updateProfile(phone, gender);
+        patientRepository.save(patient);
+        System.out.println("Patient profile updated: " + patientId);
+        return patient;
+    }
+
+    /**
+     * Deactivates a patient account.
+     * Business Rule: Data is retained even after deactivation.
+     */
+    public void deactivatePatient(String patientId) {
+        Patient patient = getPatientById(patientId);
+        patient.deactivateAccount();
+        patientRepository.save(patient);
+        System.out.println("Patient deactivated: " + patientId);
+    }
+
+    /**
+     * Deletes a patient record permanently.
+     * Business Rule: Patient must exist before deletion.
+     */
+    public void deletePatient(String patientId) {
+        if (!patientRepository.existsById(patientId)) {
+            throw new IllegalArgumentException(
+                "Cannot delete — patient not found with ID: " + patientId
+            );
+        }
+        patientRepository.delete(patientId);
+        System.out.println("Patient deleted: " + patientId);
+    }
+
+    /**
+     * Returns total number of registered patients.
+     */
+    public int getTotalPatients() {
+        return patientRepository.count();
+    }
+}
