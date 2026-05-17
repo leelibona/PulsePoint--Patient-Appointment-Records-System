@@ -74,7 +74,15 @@ Many healthcare facilities still rely on manual, paper-based systems or fragment
 - 🧪 [tests/](./tests/java/com/pulsepoint/) — Unit tests for all creational patterns
 - 📋 [CHANGELOG.md](./CHANGELOG.md) — Summary of all changes and progress
 
-### Assignment 11 — Implementing a Persistence Repository Layer
+### Assignment 12 — Service Layer and REST API Implementation
+- ⚙️ [services/](./src/main/java/com/pulsepoint/services/) — PatientService, DoctorService, AppointmentService
+- 🌐 [api/controllers/](./src/main/java/com/pulsepoint/api/controllers/) — REST API controllers for all 3 entities
+- ⚠️ [api/exceptions/](./src/main/java/com/pulsepoint/api/exceptions/) — Global exception handler
+- 📄 [docs/openapi.yaml](./docs/openapi.yaml) — Full OpenAPI 3.0.3 documentation for all 22 endpoints
+- 🧪 [tests/services/](./tests/services/) — 24 service layer unit tests
+- 🧪 [tests/api/](./tests/api/) — 20 API integration tests
+
+
 - 🗃️ [repositories/](./src/main/java/com/pulsepoint/repositories/) — Generic and entity-specific repository interfaces
 - 💾 [repositories/inmemory/](./src/main/java/com/pulsepoint/repositories/inmemory/) — In-memory HashMap implementations
 - 🔮 [repositories/database/](./src/main/java/com/pulsepoint/repositories/database/) — Database stub implementations for future use
@@ -141,7 +149,10 @@ pulsepoint/
 │   └── main/java/com/pulsepoint/
 │       ├── models/                  # All Java model classes
 │       ├── creational_patterns/     # All 6 creational design patterns
-│       ├── repositories/            # Generic + entity-specific interfaces
+│       ├── services/                # PatientService, DoctorService, AppointmentService
+│       ├── api/
+│       │   ├── controllers/         # REST API controllers
+│       │   └── exceptions/          # Global exception handler
 │       │   ├── inmemory/            # HashMap in-memory implementations
 │       │   └── database/            # Database stub implementations
 │       └── factories/               # RepositoryFactory for storage switching
