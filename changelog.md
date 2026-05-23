@@ -1,6 +1,28 @@
 # CHANGELOG.md — PulsePoint Patient Appointment & Records System
 
 All notable changes to the PulsePoint project are documented in this file.
+This changelog follows the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format.
+
+---
+
+## [Assignment 13] — Implementing CI/CD with GitHub Actions
+
+### Added — CI/CD Pipeline (`.github/workflows/ci.yml`)
+
+- **CI Job — Build and Test** — Triggers on every push to any branch and every pull request targeting `main`. Sets up Java 17, caches Maven dependencies, runs `mvn clean test` to execute all 91 unit and integration tests, and uploads test reports as artifacts retained for 7 days. PR merges are blocked if any test fails.
+
+- **CD Job — Build Release JAR** — Triggers only when code is merged to `main` and only after the CI job passes. Builds the JAR using `mvn clean package`, renames it with the build number (`pulsepoint-{build_number}.jar`), and uploads it as a downloadable GitHub Actions artifact retained for 30 days.
+
+### Added — Branch Protection
+
+- **PROTECTION.md** — Documents all branch protection rules applied to the `main` branch: require PR before merging, require 1 approval, require CI status checks to pass, require branch to be up to date, and disable direct pushes for all users including administrators.
+
+### Updated — README.md
+
+- Added **CI/CD Pipeline** section explaining the full pipeline flow with a visual diagram
+- Added **How to Run Tests Locally** section with Maven commands for running all tests, specific test classes, the Spring Boot app, and building the JAR manually
+- Added **Branch Protection Rules** summary with link to PROTECTION.md
+- Updated **Repository Structure** to include `.github/workflows/`, `docs/`, `pom.xml`, and `application.properties`
 
 ---
 
