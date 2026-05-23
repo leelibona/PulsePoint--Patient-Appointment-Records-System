@@ -74,7 +74,11 @@ Many healthcare facilities still rely on manual, paper-based systems or fragment
 - 🧪 [tests/](./tests/java/com/pulsepoint/) — Unit tests for all creational patterns
 - 📋 [CHANGELOG.md](./CHANGELOG.md) — Summary of all changes and progress
 
-### Assignment 12 — Service Layer and REST API Implementation
+### Assignment 13 — Implementing CI/CD with GitHub Actions
+- 🔒 [PROTECTION.md](./PROTECTION.md) — Branch protection rules and justification
+- ⚙️ [.github/workflows/ci.yml](./.github/workflows/ci.yml) — CI/CD pipeline workflow
+
+
 - ⚙️ [services/](./src/main/java/com/pulsepoint/services/) — PatientService, DoctorService, AppointmentService
 - 🌐 [api/controllers/](./src/main/java/com/pulsepoint/api/controllers/) — REST API controllers for all 3 entities
 - ⚠️ [api/exceptions/](./src/main/java/com/pulsepoint/api/exceptions/) — Global exception handler
@@ -91,7 +95,92 @@ Many healthcare facilities still rely on manual, paper-based systems or fragment
 
 ---
 
-## Language Choice and Key Design Decisions
+## CI/CD Pipeline
+
+PulsePoint uses **GitHub Actions** for continuous integration and continuous deployment.
+
+### How the Pipeline Works
+
+```
+Push to any branch          Pull Request to main
+        ↓                           ↓
+  CI Job triggers             CI Job triggers
+        ↓                           ↓
+  All 91 tests run           All 91 tests run
+        ↓                           ↓
+  Results logged           Pass? → PR can merge
+                           Fail? → PR is blocked
+                                     ↓
+                              Merged to main
+                                     ↓
+                          CD Job builds JAR artifact
+                                     ↓
+                        JAR uploaded to GitHub Actions
+```
+
+### CI Job — Runs on every push and PR
+- Sets up Java 17 environment
+- Caches Maven dependencies for faster builds
+- Runs `mvn clean test` — all unit and integration tests
+- Uploads test reports as artifacts (retained 7 days)
+- Blocks PR merge if any test fails
+
+### CD Job — Runs only when merged to main
+- Builds the JAR using `mvn clean package`
+- Names it `pulsepoint-{build_number}.jar`
+- Uploads as a downloadable GitHub Actions artifact (retained 30 days)
+
+### Workflow File
+`.github/workflows/ci.yml`
+
+---
+
+## How to Run Tests Locally
+
+### Prerequisites
+- Java 17 or higher installed
+- Maven 3.8+ installed
+
+### Run all tests:
+```bash
+mvn clean test
+```
+
+### Run a specific test class:
+```bash
+mvn test -Dtest=ServiceLayerTest
+mvn test -Dtest=RepositoryTest
+mvn test -Dtest=CreationalPatternsTest
+mvn test -Dtest=ApiControllerTest
+```
+
+### Run the Spring Boot application locally:
+```bash
+mvn spring-boot:run
+```
+API will be available at: `http://localhost:8080/api`
+Swagger UI will be available at: `http://localhost:8080/swagger-ui.html`
+
+### Build the JAR manually:
+```bash
+mvn clean package
+```
+JAR will be generated at: `target/pulsepoint-1.0.0.jar`
+
+---
+
+## Branch Protection Rules
+
+The `main` branch is protected with the following rules:
+- ✅ All changes must go through a Pull Request
+- ✅ At least 1 approval required before merging
+- ✅ CI tests must pass before merging
+- ✅ Branch must be up to date with main before merging
+- ✅ No direct pushes to main allowed — not even by administrators
+
+See [PROTECTION.md](./PROTECTION.md) for full justification.
+
+---
 
 ### Language — Java
 
@@ -124,43 +213,54 @@ Java was chosen as the implementation language for PulsePoint for the following 
 ```
 pulsepoint/
 ├── README.md
-├── CHANGELOG.md                 # Assignment 10 progress tracking
-├── specification.md             # System specification document
-├── architecture.md              # C4 architectural diagrams
-├── stakeholders.md              # Stakeholder analysis
-├── requirements.md              # Functional and non-functional requirements
-├── reflection.md                # Assignment 4 reflection
-├── usecases.md                  # Use case diagram and explanation
-├── use-case-specifications.md   # Detailed use case specifications
-├── test-cases.md                # Functional and non-functional test cases
-├── reflection5.md               # Assignment 5 reflection
-├── agile-planning.md            # User stories, backlog and sprint plan
-├── reflection6.md               # Assignment 6 reflection
-├── template-analysis.md         # GitHub template comparison
-├── kanban-explanation.md        # Kanban board definition and purpose
-├── reflection7.md               # Assignment 7 reflection
-├── state-diagrams.md            # State transition diagrams
-├── activity-diagrams.md         # Activity workflow diagrams
-├── reflection8.md               # Assignment 8 reflection
-├── domain-model.md              # Domain model entities and business rules
-├── class-diagram.md             # UML class diagram in Mermaid
-├── reflection9.md               # Assignment 9 reflection
+├── CHANGELOG.md                 # Project progress tracking
+├── PROTECTION.md                # Branch protection rules
+├── pom.xml                      # Maven build configuration
+├── .github/
+│   └── workflows/
+│       └── ci.yml               # CI/CD GitHub Actions pipeline
+├── specification.md
+├── architecture.md
+├── stakeholders.md
+├── requirements.md
+├── reflection.md
+├── usecases.md
+├── use-case-specifications.md
+├── test-cases.md
+├── reflection5.md
+├── agile-planning.md
+├── reflection6.md
+├── template-analysis.md
+├── kanban-explanation.md
+├── reflection7.md
+├── state-diagrams.md
+├── activity-diagrams.md
+├── reflection8.md
+├── domain-model.md
+├── class-diagram.md
+├── reflection9.md
+├── docs/
+│   └── openapi.yaml             # OpenAPI 3.0.3 API documentation
 ├── src/
-│   └── main/java/com/pulsepoint/
-│       ├── models/                  # All Java model classes
-│       ├── creational_patterns/     # All 6 creational design patterns
-│       ├── services/                # PatientService, DoctorService, AppointmentService
-│       ├── api/
-│       │   ├── controllers/         # REST API controllers
-│       │   └── exceptions/          # Global exception handler
-│       │   ├── inmemory/            # HashMap in-memory implementations
-│       │   └── database/            # Database stub implementations
-│       └── factories/               # RepositoryFactory for storage switching
-├── tests/
-│   └── java/com/pulsepoint/         # Unit tests for patterns and repositories
-├── frontend/                    # React application
-├── backend/                     # Node.js + Express API
-└── database/                    # PostgreSQL schema and migrations
+│   └── main/
+│       ├── java/com/pulsepoint/
+│       │   ├── PulsePointApplication.java
+│       │   ├── models/              # Domain model classes
+│       │   ├── creational_patterns/ # 6 creational design patterns
+│       │   ├── repositories/        # Repository interfaces
+│       │   │   ├── inmemory/        # In-memory implementations
+│       │   │   └── database/        # Database stub implementations
+│       │   ├── factories/           # RepositoryFactory
+│       │   ├── services/            # Business logic services
+│       │   └── api/
+│       │       ├── controllers/     # REST API controllers
+│       │       └── exceptions/      # Global exception handler
+│       └── resources/
+│           └── application.properties
+└── tests/
+    ├── java/com/pulsepoint/     # Creational pattern + repository tests
+    ├── services/                # Service layer unit tests
+    └── api/                     # API integration tests
 ```
 
 ---
