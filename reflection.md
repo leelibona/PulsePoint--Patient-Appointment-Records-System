@@ -398,3 +398,59 @@ Finally, this assignment highlighted the importance of incorporating business ru
 
 Overall, the process of developing the domain model and class diagram for the PulsePoint system was both challenging and rewarding. It improved my understanding of object-oriented principles, UML modelling, and the importance of designing systems that accurately reflect real-world processes. The final design provides a solid foundation for system implementation and future enhancements.
 
+# REFLECTION14.md — Open-Source Collaboration and Peer Review
+
+**Project:** PulsePoint — Patient Appointment & Records System
+**Assignment:** 14 — Peer Review, Onboarding, and Open-Source Collaboration
+
+---
+
+## 1. Introduction
+
+Preparing a repository for open-source collaboration is a fundamentally different challenge from building the software itself. Up to this point, PulsePoint had been developed as a solo project — every decision was made by one person, every commit was pushed by one person, and every test was written with only one development environment in mind. Assignment 14 forced a shift in perspective: from thinking like a developer to thinking like a project maintainer who needs to welcome, guide, and support external contributors.
+
+---
+
+## 2. How I Improved the Repository Based on Peer Feedback
+
+Before preparing PulsePoint for peer review, the repository already had extensive documentation covering specifications, architecture, requirements, use cases, and API documentation. However, most of this documentation was written for an academic audience — a marker reading through assignments — rather than for a developer who wants to clone the repo and start contributing immediately.
+
+The first major improvement was creating **CONTRIBUTING.md**. While the repository had detailed technical documentation, there was no single document that told a new contributor: "Here is exactly what you need to install, here is how to run the project, and here is how to submit your first PR." Writing this document required thinking through the entire onboarding experience from scratch — from the prerequisite tools to the PR checklist — which revealed several gaps in the existing documentation.
+
+The second improvement was adding a **ROADMAP.md** organising future features into clearly labelled phases. This serves two purposes: it shows contributors what the project is working towards, and it gives them a menu of concrete tasks to pick from rather than having to invent their own ideas for what to build.
+
+The third improvement was labelling GitHub Issues with `good-first-issue` and `feature-request` tags. This is a small change that has a significant impact on accessibility — a new contributor scanning the issues tab can immediately identify tasks that are approachable without deep knowledge of the codebase.
+
+---
+
+## 3. Challenges in Onboarding Contributors
+
+The most significant challenge in preparing PulsePoint for external contributors was the **complexity of the existing codebase**. Over thirteen assignments, the project had grown to include domain models, six creational patterns, repository interfaces, service classes, REST API controllers, CI/CD pipelines, and over 91 tests. For a newcomer, navigating this structure without guidance would be overwhelming.
+
+A related challenge was **dependency on the in-memory repository**. PulsePoint currently has no real database connected — all data is stored in HashMaps that reset when the application restarts. A contributor trying to test the API manually using Swagger UI would find that their data disappears every time the server restarts. This is a significant friction point that was documented in the CONTRIBUTING.md but cannot be fully resolved without completing the PostgreSQL integration on the roadmap.
+
+Another challenge was the **absence of a frontend**. PulsePoint is a backend-only project at this stage. A contributor who is primarily a frontend developer has limited ways to contribute without first understanding the REST API and Swagger documentation. Adding clear API documentation and Swagger UI access addresses this partially, but a fully functional frontend would make the project significantly more accessible to a wider range of contributors.
+
+---
+
+## 4. Lessons Learned About Open-Source Collaboration
+
+The most important lesson from this assignment is that **documentation is a product, not an afterthought**. The technical code in PulsePoint is only useful to other developers if they can understand it, set it up, and know where to start contributing. A repository with excellent code but poor documentation is effectively closed to outside collaboration — regardless of whether it is publicly visible on GitHub.
+
+A second lesson is that **contributor experience design matters**. The choices made when labelling issues, writing PR templates, and structuring the CONTRIBUTING.md directly affect whether a potential contributor decides to engage or gives up and moves on. Every unnecessary step in the setup process, every unexplained acronym in the documentation, and every unlabelled issue is a potential contributor lost.
+
+A third lesson is about **the value of peer review beyond grades**. Having classmates look at the repository with fresh eyes revealed things that are invisible to the original developer — assumptions that seem obvious from the inside but are confusing from the outside. This mirrors real-world open-source projects where maintainers must constantly work to see their project from a newcomer's perspective.
+
+Finally, this assignment reinforced that **open-source is not just about code — it is about community**. The stars and forks on a repository are not just metrics — they are signals of trust, interest, and engagement from other developers. Building a repository that earns those signals requires the same care and craftsmanship as building the software itself.
+
+---
+
+## 5. Conclusion
+
+Preparing PulsePoint for open-source collaboration transformed it from a personal academic project into something that resembles a real-world software product. The process of writing contribution guidelines, creating a roadmap, labelling issues, and adding a license made the project more professional, more accessible, and more ready for the next phase of development — whether that is continued solo work, team collaboration, or genuine open-source contribution.
+
+---
+
+## 6. Word Count
+
+This reflection is approximately **750 words**, exceeding the required minimum of 500 words.
