@@ -2,6 +2,39 @@
 
 All notable changes to the PulsePoint project are documented in this file.
 
+---
+
+## [Assignment 12] — Service Layer and REST API Implementation
+
+### Added — Service Classes (`/src/main/java/com/pulsepoint/services/`)
+
+- **PatientService.java** — Handles all patient business logic including registration with unique email validation, date of birth validation, profile updates, deactivation, and deletion.
+- **DoctorService.java** — Handles all doctor business logic including account creation with unique email and required specialisation/qualifications validation, doctor search by specialisation, deactivation, and deletion.
+- **AppointmentService.java** — Enforces no double booking of time slots, 2-hour restriction on cancellation and rescheduling, patient and doctor existence validation, and automatic SMS notifications on booking, rescheduling, and cancellation.
+
+### Added — REST API Controllers (`/src/main/java/com/pulsepoint/api/controllers/`)
+
+- **PatientController.java** — 7 endpoints: `GET /api/patients`, `GET /api/patients/{id}`, `POST /api/patients`, `PUT /api/patients/{id}`, `PATCH /api/patients/{id}/deactivate`, `DELETE /api/patients/{id}`, `GET /api/patients/count`
+- **DoctorController.java** — 7 endpoints: `GET /api/doctors`, `GET /api/doctors/{id}`, `POST /api/doctors`, `PUT /api/doctors/{id}`, `PATCH /api/doctors/{id}/deactivate`, `DELETE /api/doctors/{id}`, `GET /api/doctors/count`
+- **AppointmentController.java** — 8 endpoints: `GET /api/appointments`, `GET /api/appointments/{id}`, `POST /api/appointments`, `PUT /api/appointments/{id}/reschedule`, `PATCH /api/appointments/{id}/cancel`, `PATCH /api/appointments/{id}/complete`, `GET /api/appointments/count`
+
+### Added — Supporting Files
+
+- **GlobalExceptionHandler.java** — Centralized exception handler returning consistent JSON error responses (400, 404, 405, 409, 500).
+- **PulsePointApplication.java** — Spring Boot entry point on port 8080.
+- **application.properties** — Server, Swagger, and logging configuration.
+- **pom.xml** — Maven build with Spring Boot 3.2.0 and SpringDoc OpenAPI 2.3.0.
+
+### Added — API Documentation (`/docs/`)
+
+- **openapi.yaml** — Full OpenAPI 3.0.3 spec for all 22 endpoints. Includes request/response schemas, examples, and error codes. Swagger UI at `http://localhost:8080/swagger-ui.html`.
+
+### Added — Tests
+
+- **ServiceLayerTest.java** — 24 unit tests for PatientService, DoctorService, and AppointmentService.
+- **ApiControllerTest.java** — 20 integration tests verifying correct HTTP status codes across all controllers.
+
+**Total New Tests: 44**
 
 ---
 

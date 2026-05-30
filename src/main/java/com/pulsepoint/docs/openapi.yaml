@@ -1,0 +1,742 @@
+openapi: 3.0.3
+
+info:
+  title: PulsePoint REST API
+  description: |
+    REST API documentation for the PulsePoint Patient Appointment and Records System.
+
+    PulsePoint provides endpoints to manage:
+    - **Patients** — Register, update, deactivate, and delete patient accounts
+    - **Doctors** — Create and manage doctor accounts and specialisations
+    - **Appointments** — Book, reschedule, cancel, and complete appointments
+
+    All endpoints return JSON responses. Errors include a descriptive message and HTTP status code.
+
+  version: 1.0.0
+  contact:
+    name: PulsePoint Support
+    email: support@pulsepoint.com
+
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+
+tags:
+  - name: Patients
+    description: Operations for managing patient accounts
+  - name: Doctors
+    description: Operations for managing doctor accounts
+  - name: Appointments
+    description: Operations for booking and managing appointments
+
+# ─────────────────────────────────────────────────────────────────────────────
+# PATHS
+# ─────────────────────────────────────────────────────────────────────────────
+
+paths:
+
+  # ─── PATIENT ENDPOINTS ─────────────────────────────────────────────────────
+
+  /api/patients:
+    get:
+      tags: [Patients]
+      summary: Get all patients
+      description: Returns a list of all registered patients in the system.
+      operationId: getAllPatients
+      responses:
+        '200':
+          description: List of patients retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Patient'
+              example:
+                - userId: "P001"
+                  fullName: "John Doe"
+                  email: "john@email.com"
+                  phone: "0821234567"
+                  role: "Patient"
+                  status: "Active"
+
+    post:
+      tags: [Patients]
+      summary: Register a new patient
+      description: Creates a new patient account. Email must be unique.
+      operationId: registerPatient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientRequest'
+            example:
+              patientId: "P001"
+              fullName: "John Doe"
+              email: "john@email.com"
+              passwordHash: "hashed_password_here"
+              phone: "0821234567"
+              dateOfBirth: "1990-05-15"
+              gender: "Male"
+      responses:
+        '201':
+          description: Patient registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+        '400':
+          description: Missing or invalid required fields
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 400
+                error: "Bad Request"
+                message: "Full name is required."
+        '409':
+          description: Email already registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 409
+                error: "Conflict"
+                message: "An account with email john@email.com already exists."
+
+  /api/patients/{id}:
+    get:
+      tags: [Patients]
+      summary: Get patient by ID
+      description: Returns a single patient by their unique ID.
+      operationId: getPatientById
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Patient found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+        '404':
+          description: Patient not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    put:
+      tags: [Patients]
+      summary: Update patient profile
+      description: Updates a patient's phone number and gender.
+      operationId: updatePatient
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                phone:
+                  type: string
+                  example: "0829876543"
+                gender:
+                  type: string
+                  example: "Male"
+      responses:
+        '200':
+          description: Patient updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+        '404':
+          description: Patient not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      tags: [Patients]
+      summary: Delete a patient
+      description: Permanently deletes a patient record from the system.
+      operationId: deletePatient
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '204':
+          description: Patient deleted successfully
+        '404':
+          description: Patient not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/patients/{id}/deactivate:
+    patch:
+      tags: [Patients]
+      summary: Deactivate a patient account
+      description: Deactivates a patient account. Data is retained but login is blocked.
+      operationId: deactivatePatient
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Patient deactivated successfully
+          content:
+            application/json:
+              example:
+                message: "Patient account deactivated successfully."
+        '404':
+          description: Patient not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/patients/count:
+    get:
+      tags: [Patients]
+      summary: Get total patient count
+      description: Returns the total number of registered patients.
+      operationId: getPatientCount
+      responses:
+        '200':
+          description: Count returned successfully
+          content:
+            application/json:
+              example:
+                totalPatients: 42
+
+  # ─── DOCTOR ENDPOINTS ──────────────────────────────────────────────────────
+
+  /api/doctors:
+    get:
+      tags: [Doctors]
+      summary: Get all doctors
+      description: Returns all doctors. Optionally filter by specialisation.
+      operationId: getAllDoctors
+      parameters:
+        - name: specialisation
+          in: query
+          required: false
+          schema:
+            type: string
+          example: "General Practice"
+      responses:
+        '200':
+          description: List of doctors retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Doctor'
+
+    post:
+      tags: [Doctors]
+      summary: Create a new doctor account
+      description: Creates a new doctor. Only administrators should call this endpoint.
+      operationId: createDoctor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DoctorRequest'
+            example:
+              doctorId: "D001"
+              fullName: "Jane Smith"
+              email: "jane@clinic.com"
+              passwordHash: "hashed_password_here"
+              phone: "0839876543"
+              specialisation: "General Practice"
+              qualifications: "MBChB"
+      responses:
+        '201':
+          description: Doctor created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Doctor'
+        '400':
+          description: Missing or invalid required fields
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Email already registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/doctors/{id}:
+    get:
+      tags: [Doctors]
+      summary: Get doctor by ID
+      operationId: getDoctorById
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Doctor found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Doctor'
+        '404':
+          description: Doctor not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      tags: [Doctors]
+      summary: Delete a doctor account
+      operationId: deleteDoctor
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '204':
+          description: Doctor deleted successfully
+        '404':
+          description: Doctor not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/doctors/{id}/deactivate:
+    patch:
+      tags: [Doctors]
+      summary: Deactivate a doctor account
+      operationId: deactivateDoctor
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Doctor deactivated successfully
+          content:
+            application/json:
+              example:
+                message: "Doctor account deactivated successfully."
+        '404':
+          description: Doctor not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  # ─── APPOINTMENT ENDPOINTS ─────────────────────────────────────────────────
+
+  /api/appointments:
+    get:
+      tags: [Appointments]
+      summary: Get all appointments
+      description: Returns all appointments. Filter by patientId, doctorId, or status.
+      operationId: getAllAppointments
+      parameters:
+        - name: patientId
+          in: query
+          required: false
+          schema:
+            type: string
+          example: "P001"
+        - name: doctorId
+          in: query
+          required: false
+          schema:
+            type: string
+          example: "D001"
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [Pending, Confirmed, Rescheduled, InProgress, Completed, Cancelled, NoShow]
+          example: "Confirmed"
+      responses:
+        '200':
+          description: List of appointments retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Appointment'
+
+    post:
+      tags: [Appointments]
+      summary: Book a new appointment
+      description: |
+        Books a new appointment for a patient with a doctor.
+        Business rules enforced:
+        - Patient and doctor must exist
+        - Slot must not already be booked (no double booking)
+        - SMS confirmation is sent automatically on success
+      operationId: bookAppointment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppointmentRequest'
+            example:
+              appointmentId: "APT001"
+              patientId: "P001"
+              doctorId: "D001"
+              slotId: "SLOT001"
+      responses:
+        '201':
+          description: Appointment booked successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+        '400':
+          description: Patient or doctor not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Time slot already booked
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: 409
+                error: "Conflict"
+                message: "This time slot is already booked. Please select a different slot."
+
+  /api/appointments/{id}:
+    get:
+      tags: [Appointments]
+      summary: Get appointment by ID
+      operationId: getAppointmentById
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Appointment found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+        '404':
+          description: Appointment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/appointments/{id}/reschedule:
+    put:
+      tags: [Appointments]
+      summary: Reschedule an appointment
+      description: |
+        Reschedules a confirmed appointment to a new time slot.
+        Business rules enforced:
+        - Cannot reschedule within 2 hours of appointment time
+        - New slot must not be already booked
+      operationId: rescheduleAppointment
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                newSlotId:
+                  type: string
+                  example: "SLOT002"
+                appointmentTime:
+                  type: string
+                  format: date-time
+                  example: "2026-06-15T09:00:00"
+      responses:
+        '200':
+          description: Appointment rescheduled successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+        '404':
+          description: Appointment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Cannot reschedule — within 2 hours or slot taken
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/appointments/{id}/cancel:
+    patch:
+      tags: [Appointments]
+      summary: Cancel an appointment
+      description: |
+        Cancels a confirmed appointment.
+        Business rules enforced:
+        - Cannot cancel within 2 hours of appointment time
+        - SMS cancellation notification sent automatically
+      operationId: cancelAppointment
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                appointmentTime:
+                  type: string
+                  format: date-time
+                  example: "2026-06-15T09:00:00"
+      responses:
+        '200':
+          description: Appointment cancelled successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+        '404':
+          description: Appointment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Cannot cancel within 2 hours
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/appointments/{id}/complete:
+    patch:
+      tags: [Appointments]
+      summary: Complete an appointment
+      description: Marks an in-progress appointment as completed.
+      operationId: completeAppointment
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Appointment completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+        '400':
+          description: Appointment is not in progress
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Appointment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/appointments/count:
+    get:
+      tags: [Appointments]
+      summary: Get total appointment count
+      operationId: getAppointmentCount
+      responses:
+        '200':
+          description: Count returned successfully
+          content:
+            application/json:
+              example:
+                totalAppointments: 15
+
+# ─────────────────────────────────────────────────────────────────────────────
+# COMPONENTS
+# ─────────────────────────────────────────────────────────────────────────────
+
+components:
+
+  parameters:
+    IdParam:
+      name: id
+      in: path
+      required: true
+      description: Unique identifier of the resource
+      schema:
+        type: string
+      example: "P001"
+
+  schemas:
+
+    Patient:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "P001"
+        fullName:
+          type: string
+          example: "John Doe"
+        email:
+          type: string
+          example: "john@email.com"
+        phone:
+          type: string
+          example: "0821234567"
+        role:
+          type: string
+          example: "Patient"
+        status:
+          type: string
+          example: "Active"
+        dateOfBirth:
+          type: string
+          format: date
+          example: "1990-05-15"
+        gender:
+          type: string
+          example: "Male"
+        profileStatus:
+          type: string
+          example: "Complete"
+
+    PatientRequest:
+      type: object
+      required: [patientId, fullName, email, passwordHash, phone, dateOfBirth, gender]
+      properties:
+        patientId:
+          type: string
+        fullName:
+          type: string
+        email:
+          type: string
+        passwordHash:
+          type: string
+        phone:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+        gender:
+          type: string
+
+    Doctor:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "D001"
+        fullName:
+          type: string
+          example: "Jane Smith"
+        email:
+          type: string
+          example: "jane@clinic.com"
+        phone:
+          type: string
+          example: "0839876543"
+        role:
+          type: string
+          example: "Doctor"
+        specialisation:
+          type: string
+          example: "General Practice"
+        qualifications:
+          type: string
+          example: "MBChB"
+        status:
+          type: string
+          example: "Active"
+
+    DoctorRequest:
+      type: object
+      required: [doctorId, fullName, email, passwordHash, phone, specialisation, qualifications]
+      properties:
+        doctorId:
+          type: string
+        fullName:
+          type: string
+        email:
+          type: string
+        passwordHash:
+          type: string
+        phone:
+          type: string
+        specialisation:
+          type: string
+        qualifications:
+          type: string
+
+    Appointment:
+      type: object
+      properties:
+        appointmentId:
+          type: string
+          example: "APT001"
+        patientId:
+          type: string
+          example: "P001"
+        doctorId:
+          type: string
+          example: "D001"
+        slotId:
+          type: string
+          example: "SLOT001"
+        status:
+          type: string
+          enum: [Pending, Confirmed, Rescheduled, InProgress, Completed, Cancelled, NoShow]
+          example: "Confirmed"
+        createdAt:
+          type: string
+          format: date-time
+
+    AppointmentRequest:
+      type: object
+      required: [appointmentId, patientId, doctorId, slotId]
+      properties:
+        appointmentId:
+          type: string
+        patientId:
+          type: string
+        doctorId:
+          type: string
+        slotId:
+          type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 404
+        error:
+          type: string
+          example: "Not Found"
+        message:
+          type: string
+          example: "Patient not found with ID: P001"
+        timestamp:
+          type: string
+          format: date-time

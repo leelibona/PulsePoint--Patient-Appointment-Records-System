@@ -1,0 +1,151 @@
+﻿# ─────────────────────────────────────────────────────────────────────────────
+# PulsePoint CI/CD Pipeline
+# GitHub Actions Workflow
+#
+# This workflow:
+# 1. Runs all unit and integration tests on every push and pull request
+# 2. Blocks PR merges if any tests fail
+# 3. Builds a JAR artifact when code is merged to main
+# 4. Uploads the JAR as a downloadable release artifact
+# ─────────────────────────────────────────────────────────────────────────────
+
+name: PulsePoint CI/CD Pipeline
+
+# ─── TRIGGERS ────────────────────────────────────────────────────────────────
+on:
+  push:
+    branches:
+      - main
+      - '**'           # Trigger on push to any branch
+  pull_request:
+    branches:
+      - main           # Trigger on PRs targeting main
+
+# ─── JOBS ─────────────────────────────────────────────────────────────────────
+jobs:
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # JOB 1: CI — Build and Test
+  # Runs on every push and every pull request
+  # Blocks PR merge if any test fails
+  # ───────────────────────────────────────────────────────────────────────────
+  build-and-test:
+    name: Build and Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # Step 1 — Check out the repository code
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Step 2 — Set up Java 17 environment
+      - name: Set Up Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      # Step 3 — Cache Maven dependencies for faster builds
+      - name: Cache Maven Dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      # Step 4 — Build the project and run all tests
+      - name: Build and Run All Tests
+        run: mvn clean test --no-transfer-progress
+
+      # Step 5 — Upload test results for visibility in GitHub Actions
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        if: always()    # Upload even if tests fail — useful for debugging
+        with:
+          name: test-results
+          path: target/surefire-reports/
+          retention-days: 7
+
+      # Step 6 — Display test summary in the GitHub Actions log
+      - name: Display Test Summary
+        if: always()
+        run: |
+          echo "========================================="
+          echo "  PulsePoint Test Results Summary"
+          echo "========================================="
+          if [ -d "target/surefire-reports" ]; then
+            echo "Test report files:"
+            ls target/surefire-reports/
+          else
+            echo "No test reports found."
+          fi
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # JOB 2: CD — Build and Upload Release Artifact
+  # Only runs when code is merged to main (not on feature branches or PRs)
+  # Builds a JAR file and uploads it as a GitHub Actions artifact
+  # ───────────────────────────────────────────────────────────────────────────
+  build-artifact:
+    name: Build Release JAR
+    runs-on: ubuntu-latest
+    needs: build-and-test        # Only runs if build-and-test job passes
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+
+      # Step 1 — Check out the repository code
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Step 2 — Set up Java 17 environment
+      - name: Set Up Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      # Step 3 — Cache Maven dependencies
+      - name: Cache Maven Dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      # Step 4 — Build the JAR file (skip tests — already ran in Job 1)
+      - name: Build JAR Artifact
+        run: mvn clean package -DskipTests --no-transfer-progress
+
+      # Step 5 — Rename the JAR with version and build number for clarity
+      - name: Rename JAR with Build Number
+        run: |
+          mkdir -p release
+          cp target/*.jar release/pulsepoint-${{ github.run_number }}.jar
+          echo "JAR built: pulsepoint-${{ github.run_number }}.jar"
+          ls -lh release/
+
+      # Step 6 — Upload the JAR as a downloadable GitHub Actions artifact
+      - name: Upload JAR Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pulsepoint-release-${{ github.run_number }}
+          path: release/pulsepoint-${{ github.run_number }}.jar
+          retention-days: 30
+
+      # Step 7 — Print deployment summary
+      - name: Deployment Summary
+        run: |
+          echo "========================================="
+          echo "  PulsePoint Release Build Complete"
+          echo "========================================="
+          echo "Build Number : ${{ github.run_number }}"
+          echo "Branch       : ${{ github.ref_name }}"
+          echo "Commit SHA   : ${{ github.sha }}"
+          echo "Triggered by : ${{ github.actor }}"
+          echo "Artifact     : pulsepoint-${{ github.run_number }}.jar"
+          echo "========================================="
