@@ -74,6 +74,88 @@ Many healthcare facilities still rely on manual, paper-based systems or fragment
 - 🧪 [tests/](./tests/java/com/pulsepoint/) — Unit tests for all creational patterns
 - 📋 [CHANGELOG.md](./CHANGELOG.md) — Summary of all changes and progress
 
+<<<<<<< HEAD
+### Assignment 14 — Peer Review, Onboarding, and Open-Source Collaboration
+- 🤝 [CONTRIBUTING.md](./CONTRIBUTING.md) — Setup instructions, coding standards, and PR guidelines
+- 🗺️ [ROADMAP.md](./ROADMAP.md) — Planned features across 5 development phases
+- 📊 [VOTING_RESULTS.md](./VOTING_RESULTS.md) — Peer engagement stars and forks
+- 💭 [REFLECTION14.md](./REFLECTION14.md) — Reflection on open-source collaboration
+- 📜 [LICENSE](./LICENSE) — MIT License
+
+---
+
+## Getting Started
+
+### Prerequisites
+- Java 17+
+- Maven 3.8+
+- Git
+
+### Quick Setup
+```bash
+# Clone the repository
+git clone https://github.com/leelibona/PulsePoint--Patient-Appointment-Records-System.git
+cd PulsePoint--Patient-Appointment-Records-System
+
+# Install dependencies
+mvn clean install
+
+# Run all tests
+mvn clean test
+
+# Start the application
+mvn spring-boot:run
+```
+
+API: `http://localhost:8080/api`
+Swagger UI: `http://localhost:8080/swagger-ui.html`
+
+---
+
+## Features Available for Contribution
+
+| Feature | Difficulty | Label |
+|---|---|---|
+| Add input validation with `@Valid` annotations | Easy | `good-first-issue` |
+| Add pagination to GET endpoints | Easy | `good-first-issue` |
+| Add Docker and docker-compose support | Easy | `good-first-issue` |
+| Add Twilio SMS integration | Medium | `good-first-issue` |
+| Add email notifications | Medium | `good-first-issue` |
+| Implement PostgreSQL database | Medium | `feature-request` |
+| Build React patient portal | Hard | `feature-request` |
+| Implement JWT authentication | Hard | `feature-request` |
+| Add Redis caching | Hard | `feature-request` |
+
+See [ROADMAP.md](./ROADMAP.md) for the full list and [CONTRIBUTING.md](./CONTRIBUTING.md) to get started.
+
+---
+
+## License
+
+This project is licensed under the **MIT License** — see [LICENSE](./LICENSE) for details.
+
+---
+- 🔒 [PROTECTION.md](./PROTECTION.md) — Branch protection rules and justification
+- ⚙️ [.github/workflows/ci.yml](./.github/workflows/ci.yml) — CI/CD pipeline workflow
+
+
+- ⚙️ [services/](./src/main/java/com/pulsepoint/services/) — PatientService, DoctorService, AppointmentService
+- 🌐 [api/controllers/](./src/main/java/com/pulsepoint/api/controllers/) — REST API controllers for all 3 entities
+- ⚠️ [api/exceptions/](./src/main/java/com/pulsepoint/api/exceptions/) — Global exception handler
+- 📄 [docs/openapi.yaml](./docs/openapi.yaml) — Full OpenAPI 3.0.3 documentation for all 22 endpoints
+- 🧪 [tests/services/](./tests/services/) — 24 service layer unit tests
+- 🧪 [tests/api/](./tests/api/) — 20 API integration tests
+
+
+- 🗃️ [repositories/](./src/main/java/com/pulsepoint/repositories/) — Generic and entity-specific repository interfaces
+- 💾 [repositories/inmemory/](./src/main/java/com/pulsepoint/repositories/inmemory/) — In-memory HashMap implementations
+- 🔮 [repositories/database/](./src/main/java/com/pulsepoint/repositories/database/) — Database stub implementations for future use
+- 🏭 [factories/RepositoryFactory.java](./src/main/java/com/pulsepoint/factories/RepositoryFactory.java) — Storage abstraction factory
+- 🧪 [tests/RepositoryTest.java](./tests/java/com/pulsepoint/RepositoryTest.java) — 30 unit tests for all repository implementations
+
+---
+
+=======
 ### Assignment 13 — Implementing CI/CD with GitHub Actions
 - 🔒 [PROTECTION.md](./PROTECTION.md) — Branch protection rules and justification
 - ⚙️ [.github/workflows/ci.yml](./.github/workflows/ci.yml) — CI/CD pipeline workflow
@@ -95,6 +177,7 @@ Many healthcare facilities still rely on manual, paper-based systems or fragment
 
 ---
 
+>>>>>>> 6e55ce7ae48b056686e26c51a1d4a3c9799dceff
 ## CI/CD Pipeline
 
 PulsePoint uses **GitHub Actions** for continuous integration and continuous deployment.
