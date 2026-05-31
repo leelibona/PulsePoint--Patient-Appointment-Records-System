@@ -72,14 +72,13 @@ Many healthcare facilities still rely on manual, paper-based systems or fragment
 - ☕ [src/](./src/main/java/com/pulsepoint/) — Java source code for all model classes
 - 🏭 [creational_patterns/](./src/main/java/com/pulsepoint/creational_patterns/) — All 6 creational design pattern implementations
 - 🧪 [tests/](./tests/java/com/pulsepoint/) — Unit tests for all creational patterns
-- 📋 [CHANGELOG.md](./CHANGELOG.md) — Summary of all changes and progress
+- 📋 [CHANGELOG.md](./changelog.md) — Summary of all changes and progress
 
-<<<<<<< HEAD
 ### Assignment 14 — Peer Review, Onboarding, and Open-Source Collaboration
-- 🤝 [CONTRIBUTING.md](./CONTRIBUTING.md) — Setup instructions, coding standards, and PR guidelines
-- 🗺️ [ROADMAP.md](./ROADMAP.md) — Planned features across 5 development phases
-- 📊 [VOTING_RESULTS.md](./VOTING_RESULTS.md) — Peer engagement stars and forks
-- 💭 [REFLECTION14.md](./REFLECTION14.md) — Reflection on open-source collaboration
+- 🤝 [CONTRIBUTING.md](./contributing.md) — Setup instructions, coding standards, and PR guidelines
+- 🗺️ [ROADMAP.md](./roadmap.md) — Planned features across 5 development phases
+- 📊 [VOTING_RESULTS.md](./voting-results.md) — Peer engagement stars and forks
+- 💭 [REFLECTION14.md](./reflection.md) — Reflection on open-source collaboration
 - 📜 [LICENSE](./LICENSE) — MIT License
 
 ---
@@ -126,7 +125,7 @@ Swagger UI: `http://localhost:8080/swagger-ui.html`
 | Implement JWT authentication | Hard | `feature-request` |
 | Add Redis caching | Hard | `feature-request` |
 
-See [ROADMAP.md](./ROADMAP.md) for the full list and [CONTRIBUTING.md](./CONTRIBUTING.md) to get started.
+See [ROADMAP.md](./roadmap.md) for the full list and [CONTRIBUTING.md](./contributing.md) to get started.
 
 ---
 
@@ -135,7 +134,7 @@ See [ROADMAP.md](./ROADMAP.md) for the full list and [CONTRIBUTING.md](./CONTRIB
 This project is licensed under the **MIT License** — see [LICENSE](./LICENSE) for details.
 
 ---
-- 🔒 [PROTECTION.md](./PROTECTION.md) — Branch protection rules and justification
+- 🔒 [protection.md](./protection.md) — Branch protection rules and justification
 - ⚙️ [.github/workflows/ci.yml](./.github/workflows/ci.yml) — CI/CD pipeline workflow
 
 
@@ -155,29 +154,6 @@ This project is licensed under the **MIT License** — see [LICENSE](./LICENSE) 
 
 ---
 
-=======
-### Assignment 13 — Implementing CI/CD with GitHub Actions
-- 🔒 [PROTECTION.md](./PROTECTION.md) — Branch protection rules and justification
-- ⚙️ [.github/workflows/ci.yml](./.github/workflows/ci.yml) — CI/CD pipeline workflow
-
-
-- ⚙️ [services/](./src/main/java/com/pulsepoint/services/) — PatientService, DoctorService, AppointmentService
-- 🌐 [api/controllers/](./src/main/java/com/pulsepoint/api/controllers/) — REST API controllers for all 3 entities
-- ⚠️ [api/exceptions/](./src/main/java/com/pulsepoint/api/exceptions/) — Global exception handler
-- 📄 [docs/openapi.yaml](./docs/openapi.yaml) — Full OpenAPI 3.0.3 documentation for all 22 endpoints
-- 🧪 [tests/services/](./tests/services/) — 24 service layer unit tests
-- 🧪 [tests/api/](./tests/api/) — 20 API integration tests
-
-
-- 🗃️ [repositories/](./src/main/java/com/pulsepoint/repositories/) — Generic and entity-specific repository interfaces
-- 💾 [repositories/inmemory/](./src/main/java/com/pulsepoint/repositories/inmemory/) — In-memory HashMap implementations
-- 🔮 [repositories/database/](./src/main/java/com/pulsepoint/repositories/database/) — Database stub implementations for future use
-- 🏭 [factories/RepositoryFactory.java](./src/main/java/com/pulsepoint/factories/RepositoryFactory.java) — Storage abstraction factory
-- 🧪 [tests/RepositoryTest.java](./tests/java/com/pulsepoint/RepositoryTest.java) — 30 unit tests for all repository implementations
-
----
-
->>>>>>> 6e55ce7ae48b056686e26c51a1d4a3c9799dceff
 ## CI/CD Pipeline
 
 PulsePoint uses **GitHub Actions** for continuous integration and continuous deployment.
@@ -261,7 +237,7 @@ The `main` branch is protected with the following rules:
 - ✅ Branch must be up to date with main before merging
 - ✅ No direct pushes to main allowed — not even by administrators
 
-See [PROTECTION.md](./PROTECTION.md) for full justification.
+See [protection.md](./protection.md) for full justification.
 
 ---
 

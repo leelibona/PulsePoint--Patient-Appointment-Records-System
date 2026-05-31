@@ -91,4 +91,4 @@ If you have a feature idea that is not listed here:
 2. Describe the feature, why it is useful, and how it relates to existing functionality
 3. The maintainer will review and add it to the roadmap if appropriate
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for full contribution guidelines.
+See [contributing.md](./contributing.md) for full contribution guidelines.
